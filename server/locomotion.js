@@ -20,7 +20,7 @@ export function locomotion(f,movement,dt){
  if(f.stagger>0){f.gait.planted=false;for(const side of ['L','R']){f.plants[side].stiffness=0;f.gait.stance[side]=false;}return;}
  f.recovery=Math.min(1,f.recovery+dt*(.8+b*.18));
  const power=f.recovery*(.8+b*.045),vx=movement*f.derived.moveSpeed*.019;
- const profile=poseProfile(f.build);f.gait.phase+=(movement===0?.6:profile.cadence)*dt;f.gait.planted=false;
+ const profile=poseProfile(f.build);f.gait.phase+=(movement===0?.6:profile.cadence)*(f.exhausted?.55:1)*dt;f.gait.planted=false;
  // Finite balance muscles support body height, but remain off during stagger.
  muscle(p.torso,f.pose?.lean||0,.0015,power);muscle(p.head,0,.0011,power);muscle(p.pelvis,0,.0015,power);
  servo(p.torso,p.torso.position.x+(vx-p.torso.velocity.x)*16,323+(f.pose?.crouch??profile.crouch),.0011,power);
