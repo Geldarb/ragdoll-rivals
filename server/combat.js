@@ -1,4 +1,5 @@
 import Matter from 'matter-js';
+import {locomotion,applyImpact} from './locomotion.js';
 import { deriveStats, GEAR, STYLE_DATA } from '../shared/rules.js';
 const {Engine,Bodies,Body,Composite,Constraint}=Matter;
 const DT=1/30;
@@ -7,17 +8,20 @@ function fighter(engine,build,index,x){
  const d=deriveStats(build),group=Body.nextGroup(true),parts={},joints=[];
  const opt={collisionFilter:{group},friction:.7,frictionAir:.035,restitution:.08,density:.002};
  parts.torso=Bodies.rectangle(x,330,34,68,{...opt,chamfer:{radius:12},label:`${index}:torso`});
+ parts.pelvis=Bodies.rectangle(x,367,30,20,{...opt,label:`${index}:pelvis`});
  parts.head=Bodies.circle(x,276,19,{...opt,label:`${index}:head`});
  const limb=(name,px,py,w,h)=>parts[name]=Bodies.rectangle(px,py,w,h,{...opt,chamfer:{radius:5},label:`${index}:${name}`});
  for(const side of [-1,1]){const s=side<0?'L':'R';limb('upperArm'+s,x+side*23,330,13,43);limb('lowerArm'+s,x+side*24,372,11,40);limb('thigh'+s,x+side*11,390,16,48);limb('shin'+s,x+side*11,432,13,43);}
  const joint=(a,b,pa,pb,stiffness=.72)=>joints.push(Constraint.create({bodyA:a,bodyB:b,pointA:pa,pointB:pb,length:2,stiffness,damping:.12}));
+ joint(parts.torso,parts.pelvis,{x:0,y:33},{x:0,y:-10},.95);
  joint(parts.torso,parts.head,{x:0,y:-34},{x:0,y:17},.85);
- for(const side of [-1,1]){const s=side<0?'L':'R';joint(parts.torso,parts['upperArm'+s],{x:side*18,y:-24},{x:0,y:-19});joint(parts['upperArm'+s],parts['lowerArm'+s],{x:0,y:19},{x:0,y:-18},.65);joint(parts.torso,parts['thigh'+s],{x:side*10,y:30},{x:0,y:-22},.85);joint(parts['thigh'+s],parts['shin'+s],{x:0,y:22},{x:0,y:-19},.8);}
+ for(const side of [-1,1]){const s=side<0?'L':'R';joint(parts.torso,parts['upperArm'+s],{x:side*18,y:-24},{x:0,y:-19});joint(parts['upperArm'+s],parts['lowerArm'+s],{x:0,y:19},{x:0,y:-18},.65);joint(parts.pelvis,parts['thigh'+s],{x:side*10,y:5},{x:0,y:-22},.98);joint(parts['thigh'+s],parts['shin'+s],{x:0,y:22},{x:0,y:-19},.98);limb('foot'+s,x+side*11,453,26,10);joint(parts['shin'+s],parts['foot'+s],{x:0,y:21},{x:0,y:-3},.98);}
  const reach=d.reach;
  parts.weapon=Bodies.rectangle(x+(index? -1:1)*42,356,10,reach,{...opt,density:.0015,label:`${index}:weapon`});
  joint(parts.lowerArmR,parts.weapon,{x:0,y:17},{x:0,y:-reach*.36},.92);
- Composite.add(engine.world,[...Object.values(parts),...joints]);
- return {build,derived:d,parts,limbs:Object.values(parts),joints,health:d.maxHealth,stamina:d.maxStamina,cooldown:.3,attack:0,attackId:0,hitAttack:-1,guard:false,think:0,metrics:{approach:0,retreat:0,guard:0,attack:0},flash:0};
+ const plants={};for(const side of ['L','R']){plants[side]=Constraint.create({bodyB:parts['foot'+side],pointA:{x:parts['foot'+side].position.x,y:453},length:0,stiffness:0,damping:.2});}
+ Composite.add(engine.world,[...Object.values(parts),...joints,...Object.values(plants)]);
+ return {build,derived:d,parts,plants,stagger:0,recovery:1,gait:{phase:0,planted:false,stance:{L:false,R:false}},limbs:Object.values(parts),joints,health:d.maxHealth,stamina:d.maxStamina,cooldown:.3,attack:0,attackId:0,hitAttack:-1,guard:false,think:0,metrics:{approach:0,retreat:0,guard:0,attack:0},flash:0};
 }
 function decide(m,f,o,index){
  const s=STYLE_DATA[f.build.style],distance=Math.abs(f.parts.torso.position.x-o.parts.torso.position.x),range=78+f.derived.reach*.75*s.range;
@@ -32,7 +36,7 @@ function decide(m,f,o,index){
  if(f.guard)f.metrics.guard++;
  const staminaOK=f.stamina>=f.derived.attackCost*(f.build.style==='berserker'?.45:1);
  let chance=s.chance;if(f.build.style==='counterattacker'&&opening)chance=1;if(f.build.style==='patient'&&!opening)chance*=.45;
- if(distance<100+f.derived.reach&&f.cooldown<=0&&staminaOK&&m.rng()<chance){f.attack=.38;f.attackId++;f.stamina=Math.max(0,f.stamina-f.derived.attackCost);f.cooldown=f.derived.interval;f.metrics.attack++;}
+ if(f.stagger===0&&distance<100+f.derived.reach&&f.cooldown<=0&&staminaOK&&m.rng()<chance){f.attack=.38;f.attackId++;f.stamina=Math.max(0,f.stamina-f.derived.attackCost);f.cooldown=f.derived.interval;f.metrics.attack++;}
 }
 function hit(m,a,b,ai){
  if(a.attack<=0||a.attack>.25||a.hitAttack===a.attackId)return;
@@ -44,14 +48,14 @@ function hit(m,a,b,ai){
   mitigation=bd.armour*(1-(GEAR.weapons[a.build.weapon].armourBypass||0));if(part==='head')mitigation=1-(1-mitigation)*(1-bd.helmet);
   let blocked=false;if(b.guard&&m.rng()<bd.block){blocked=true;mitigation=1-(1-mitigation)*.35;}
   const amount=Math.max(2,d.damage*(.85+m.rng()*.3)*(1-mitigation));b.health=Math.max(0,b.health-amount);b.flash=.15;
-  const direction=a===m.fighters[0]?1:-1;Body.applyForce(b.parts.torso,p.position,{x:direction*(.012+a.build.stats.strength*.0015)*(1-bd.balance*.35),y:-.009});
+  const direction=a===m.fighters[0]?1:-1;applyImpact(b,amount,direction);Body.applyForce(b.parts.torso,p.position,{x:direction*(.012+a.build.stats.strength*.0015)*(1-bd.balance*.35),y:-.009});
   m.events.push({type:'hit',tick:m.tick,a:ai,part,amount:Math.round(amount),blocked,x:tip.x,y:tip.y});return;
  }
 }
 function snapshot(m){return {type:'snapshot',tick:m.tick,time:m.time,status:m.status,winner:m.winner,fighters:m.fighters.map(f=>({name:f.build.name,health:f.health,maxHealth:f.derived.maxHealth,stamina:f.stamina,maxStamina:f.derived.maxStamina,build:f.build,attack:f.attack,guard:f.guard,flash:f.flash,parts:Object.fromEntries(Object.entries(f.parts).map(([k,p])=>[k,{x:p.position.x,y:p.position.y,a:p.angle}]))})),events:m.events.splice(0)};}
 export function createMatch(a,b,{seed=Date.now(),mode='computer'}={}){
  const engine=Engine.create({gravity:{x:0,y:1,scale:.001}});engine.positionIterations=8;engine.velocityIterations=6;
- const ground=Bodies.rectangle(400,478,900,40,{isStatic:true,friction:.9,label:'ground'});Composite.add(engine.world,ground);
+ const ground=Bodies.rectangle(400,478,900,40,{isStatic:true,friction:.9,label:'ground'});Composite.add(engine.world,[ground,Bodies.rectangle(-25,250,50,600,{isStatic:true}),Bodies.rectangle(925,250,50,600,{isStatic:true})]);
  const m={engine,fighters:[fighter(engine,a,0,245),fighter(engine,b,1,555)],time:0,tick:0,status:'fighting',winner:null,events:[{type:'start'}],rng:random(seed),mode,seed};
  return m;
 }
@@ -60,8 +64,8 @@ export function stepMatch(m){
  m.fighters.forEach((f,i)=>{const o=m.fighters[1-i];f.cooldown=Math.max(0,f.cooldown-DT);f.attack=Math.max(0,f.attack-DT);f.flash=Math.max(0,f.flash-DT);f.think-=DT;if(f.think<=0){f.think=.15;decide(m,f,o,i);}if(f.attack<=0)f.stamina=Math.min(f.derived.maxStamina,f.stamina+f.derived.regen*DT);
  const torso=f.parts.torso,dir=i===0?1:-1,distance=Math.abs(torso.position.x-o.parts.torso.position.x),range=100+f.derived.reach*STYLE_DATA[f.build.style].range;
  let movement=distance>range?dir:0;if(f.build.style==='evasive'&&Math.floor(m.time*1.3+i)%4===0)movement=-dir;if(f.build.style==='berserker')movement=dir;
- const target=movement*f.derived.moveSpeed*.019;Body.setVelocity(torso,{x:torso.velocity.x*.82+target*.18,y:torso.velocity.y});torso.torque+=(-torso.angle*f.derived.balance-torso.angularVelocity*.6)*.045;
- for(const side of ['L','R']){const arm=f.parts['upperArm'+side];if(side==='R'){const target=f.attack>0?(i===0?-1.7:1.7):(i===0?-.45:.45);arm.torque+=(target-arm.angle)*.13-arm.angularVelocity*.035;}else arm.torque+=(-arm.angle*.03-arm.angularVelocity*.015);}
+ locomotion(f,movement,DT);
+ if(f.stagger===0)for(const side of ['L','R']){const arm=f.parts['upperArm'+side];if(side==='R'){const target=f.attack>0?(i===0?-1.7:1.7):(i===0?-.45:.45);arm.torque+=(target-arm.angle)*.13-arm.angularVelocity*.035;}else arm.torque+=(-arm.angle*.03-arm.angularVelocity*.015);}
  });
  Engine.update(m.engine,1000/60);Engine.update(m.engine,1000/60);hit(m,m.fighters[0],m.fighters[1],0);hit(m,m.fighters[1],m.fighters[0],1);
  if(m.fighters.some(f=>f.health<=0)||m.time>=75){m.status='finished';const [a,b]=m.fighters;if(a.health===b.health)m.winner=-1;else m.winner=a.health>b.health?0:1;m.events.push({type:'finished',winner:m.winner});}

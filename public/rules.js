@@ -1,4 +1,4 @@
-export const VERSION='1.0.0';
+export const VERSION='1.1.0';
 export const STAT_NAMES=['strength','vitality','speed','stamina','balance'];
 export const GEAR=Object.freeze({
  weapons:{dagger:{weight:1,damage:7,reach:38,interval:.52,cost:8},sword:{weight:3,damage:12,reach:61,interval:.78,cost:12},axe:{weight:5,damage:18,reach:55,interval:1.02,cost:16},mace:{weight:6,damage:16,reach:51,interval:.94,cost:15,armourBypass:.25},claymore:{weight:8,damage:25,reach:82,interval:1.38,cost:23,twoHanded:true}},

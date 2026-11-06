@@ -1,5 +1,6 @@
 import { randomInt } from 'node:crypto';
 import { createMatch, stepMatch } from './combat.js';
+import {startMatchLoop} from './network-motion.js';
 import { DEFAULT_BUILD, normaliseBuild, validateBuild } from '../shared/rules.js';
 const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const send=(ws,msg)=>{if(ws?.readyState===1)ws.send(JSON.stringify(msg));};
@@ -11,7 +12,16 @@ export class RoomManager{
  create(ws,b){const build=this.valid(ws,b);if(!build)return;const code=this.code(),room={code,mode:'pvp',players:[{ws,build},null],votes:new Set(),match:null,timer:null,disconnect:null};this.rooms.set(code,room);ws.room=room;ws.slot=0;send(ws,{type:'roomCreated',code,slot:0});}
  join(ws,code,b){if(typeof code!=='string'||!/^[A-HJ-NP-Z2-9]{6}$/.test(code))return this.error(ws,'Room codes contain six letters or digits.');const room=this.rooms.get(code);if(!room)return this.error(ws,'Room not found. Check the code and try again.');if(room.players[1])return this.error(ws,'That room is already full.');const build=this.valid(ws,b);if(!build)return;room.players[1]={ws,build};ws.room=room;ws.slot=1;send(ws,{type:'joined',code,slot:1});this.start(room,false);}
  computer(ws,b){const build=this.valid(ws,b);if(!build)return;const styles=['aggressive','defensive','counterattacker','evasive','balanced','berserker','patient'];const opponent={...structuredClone(DEFAULT_BUILD),name:'The Blackthorn',style:styles[randomInt(styles.length)]};const room={code:null,mode:'computer',players:[{ws,build},null],votes:new Set(),match:null,timer:null,disconnect:null};ws.room=room;ws.slot=0;room.opponent=opponent;this.start(room,false);}
- start(room,rematch){clearTimeout(room.disconnect);room.disconnect=null;room.votes.clear();const [a,b]=room.players;room.match=createMatch(a.build,room.mode==='computer'?room.opponent:b.build,{seed:randomInt(2**31),mode:room.mode});for(const [i,p] of room.players.entries())if(p&&p.ws.readyState===1)send(p.ws,{type:'started',code:room.code,slot:i,rematch,mode:room.mode});clearInterval(room.timer);room.timer=setInterval(()=>{const m=room.match;if(!m||m.status!=='fighting')return;const snap=stepMatch(m);if(m.tick%2===0)this.broadcast(room,snap);if(m.status==='finished'){clearInterval(room.timer);if(room.pendingRematch?.size){const votes=room.pendingRematch;room.pendingRematch=null;if(room.mode==='computer'||votes.size===2){this.broadcast(room,{type:'finished',winner:m.winner,reason:m.time>=75?'Time limit':'Knockout'});this.start(room,true);return;}}room.timer=null;this.broadcast(room,{type:'finished',winner:m.winner,reason:m.time>=75?'Time limit':'Knockout'});}},1000/30);room.timer.unref();}
+ start(room,rematch){
+  clearTimeout(room.disconnect);room.disconnect=null;room.votes.clear();const [a,b]=room.players;
+  room.match=createMatch(a.build,room.mode==='computer'?room.opponent:b.build,{seed:randomInt(2**31),mode:room.mode});
+  for(const [i,p] of room.players.entries())if(p&&p.ws.readyState===1)send(p.ws,{type:'started',code:room.code,slot:i,rematch,mode:room.mode,fighters:room.match.fighters.map(f=>({build:f.build,name:f.build.name})),snapshotHz:30});
+  clearInterval(room.timer);
+  const loop=startMatchLoop(room.match,stepMatch,snap=>this.broadcast(room,snap),()=>{
+   room.timer=null;const m=room.match;this.broadcast(room,{type:'finished',winner:m.winner,reason:m.time>=75?'Time limit':'Knockout'});
+   if(room.pendingRematch?.size){const votes=room.pendingRematch;room.pendingRematch=null;if(room.mode==='computer'||votes.size===2)this.start(room,true);}
+  });room.timer=loop.timer;room.timing=loop.metrics;
+ }
  broadcast(room,msg){for(const p of room.players)if(p)send(p.ws,msg);}
  rematch(ws){const r=ws.room;if(!r)return this.error(ws,'You are not in a room.');if(r.match?.status==='fighting'){r.pendingRematch??=new Set();r.pendingRematch.add(ws.slot);this.broadcast(r,{type:'rematchStatus',votes:r.pendingRematch.size});return;}if(!r.match)return this.error(ws,'The duel has not started.');r.votes.add(ws.slot);if(r.mode==='computer'||r.votes.size===2)return this.start(r,true);this.broadcast(r,{type:'rematchStatus',votes:r.votes.size});}
  close(ws){const r=ws.room;if(!r)return;const p=r.players[ws.slot];if(!p||p.ws!==ws)return;r.players[ws.slot]=null;ws.room=null;if(r.mode==='computer'||r.players.every(x=>!x)){clearInterval(r.timer);clearTimeout(r.disconnect);if(r.code)this.rooms.delete(r.code);return;}if(!r.match)return this.rooms.delete(r.code);if(r.match.status==='fighting'){r.disconnect=setTimeout(()=>{clearInterval(r.timer);r.timer=null;r.match.status='finished';r.match.winner=ws.slot===0?1:0;this.broadcast(r,{type:'finished',winner:r.match.winner,reason:'Opponent disconnected'});},10000);r.disconnect.unref();}}
