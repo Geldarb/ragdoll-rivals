@@ -11,7 +11,7 @@ async function until(ws,type,timeout=5000){const end=Date.now()+timeout;while(Da
 const send=(ws,type,extra={})=>ws.send(JSON.stringify({type,build:DEFAULT_BUILD,...extra}));
 test.before(async()=>{server=createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));port=server.address().port;});
 test.after(async()=>{await new Promise(r=>server.close(r));});
-test('health returns version JSON',async()=>{const r=await fetch(`http://127.0.0.1:${port}/health`);assert.equal(r.status,200);assert.deepEqual(await r.json(),{ok:true,version:'1.0.0'});});
+test('health returns version JSON',async()=>{const r=await fetch(`http://127.0.0.1:${port}/health`);assert.equal(r.status,200);assert.deepEqual(await r.json(),{ok:true,version:'1.0.0',commit:'local'});});
 test('invalid room code returns a useful error',async()=>{const ws=await client();send(ws,'joinRoom',{code:'NOPE!!'});assert.match((await until(ws,'error')).message,/code/i);ws.close();});
 test('two real clients create, join and receive identical snapshots',async()=>{
  const a=await client(),b=await client();send(a,'createRoom');const made=await until(a,'roomCreated');assert.match(made.code,/^[A-HJ-NP-Z2-9]{6}$/);send(b,'joinRoom',{code:made.code});await until(a,'started');await until(b,'started');const [sa,sb]=await Promise.all([until(a,'snapshot'),until(b,'snapshot')]);assert.equal(sa.tick,sb.tick);assert.deepEqual(sa.fighters.map(f=>f.parts),sb.fighters.map(f=>f.parts));a.terminate();b.terminate();
