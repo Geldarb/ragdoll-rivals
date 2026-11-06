@@ -33,6 +33,6 @@ test('strength increases damage and vitality health',()=>{
 test('normalises name and preserves legal loadout',()=>{
  const b=normaliseBuild({...validBuild(),name:'  Egbert  '});assert.equal(b.name,'Egbert');assert.equal(b.weapon,'sword');
 });
-test('all seven styles and five weapons exist',()=>{
- assert.equal(STYLES.length,7);assert.deepEqual(Object.keys(GEAR.weapons),['dagger','sword','axe','mace','claymore']);
+test('all seven styles and eleven weapons exist',()=>{
+ assert.equal(STYLES.length,7);assert.deepEqual(Object.keys(GEAR.weapons),['dagger','sword','axe','mace','claymore','spear','flail','warhammer','halberd','rapier','twinSwords']);
 });

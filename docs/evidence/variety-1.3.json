@@ -1,0 +1,167 @@
+{
+  "version": "1.3.0",
+  "simulationHash": "73eea5b281a17a0007b6393047d1ea085ea06ff6b0114c31cd669487b98fccc0",
+  "generatedAt": "2026-11-06T23:16:45.084Z",
+  "method": "Mirrored sides; common seed, style and armour per matchup; draws count half a win; no hidden matchup modifiers.",
+  "weapons": {
+    "seeds": 7,
+    "duels": 770,
+    "draws": 0,
+    "timeouts": 1,
+    "knockouts": 769,
+    "timeoutRate": 0.0012987012987012987,
+    "drawRate": 0,
+    "meanFightSeconds": 17.56705627705639,
+    "rows": {
+      "dagger": {
+        "wins": 90,
+        "draws": 0,
+        "matches": 140,
+        "score": 90,
+        "winRate": 0.6428571428571429
+      },
+      "sword": {
+        "wins": 77,
+        "draws": 0,
+        "matches": 140,
+        "score": 77,
+        "winRate": 0.55
+      },
+      "axe": {
+        "wins": 88,
+        "draws": 0,
+        "matches": 140,
+        "score": 88,
+        "winRate": 0.6285714285714286
+      },
+      "mace": {
+        "wins": 79,
+        "draws": 0,
+        "matches": 140,
+        "score": 79,
+        "winRate": 0.5642857142857143
+      },
+      "claymore": {
+        "wins": 58,
+        "draws": 0,
+        "matches": 140,
+        "score": 58,
+        "winRate": 0.4142857142857143
+      },
+      "spear": {
+        "wins": 68,
+        "draws": 0,
+        "matches": 140,
+        "score": 68,
+        "winRate": 0.4857142857142857
+      },
+      "flail": {
+        "wins": 55,
+        "draws": 0,
+        "matches": 140,
+        "score": 55,
+        "winRate": 0.39285714285714285
+      },
+      "warhammer": {
+        "wins": 64,
+        "draws": 0,
+        "matches": 140,
+        "score": 64,
+        "winRate": 0.45714285714285713
+      },
+      "halberd": {
+        "wins": 57,
+        "draws": 0,
+        "matches": 140,
+        "score": 57,
+        "winRate": 0.40714285714285714
+      },
+      "rapier": {
+        "wins": 64,
+        "draws": 0,
+        "matches": 140,
+        "score": 64,
+        "winRate": 0.45714285714285713
+      },
+      "twinSwords": {
+        "wins": 70,
+        "draws": 0,
+        "matches": 140,
+        "score": 70,
+        "winRate": 0.5
+      }
+    }
+  },
+  "styles": {
+    "aggressive": {
+      "spacing": 100.45521122702074,
+      "attacksPerSecond": 0.5939515030424114,
+      "blocksPerSecond": 0,
+      "guardFraction": 0,
+      "travelPerSecond": 78.88361314745246,
+      "dodgesPerSecond": 0,
+      "feintsPerSecond": 0,
+      "hitsPerSecond": 0.3351194260285166
+    },
+    "defensive": {
+      "spacing": 110.2042890411659,
+      "attacksPerSecond": 0.5367731197336945,
+      "blocksPerSecond": 0.1373140538853637,
+      "guardFraction": 0.8517366511145671,
+      "travelPerSecond": 61.82279680600281,
+      "dodgesPerSecond": 0,
+      "feintsPerSecond": 0,
+      "hitsPerSecond": 0.40257983980027084
+    },
+    "counterattacker": {
+      "spacing": 108.72424131135448,
+      "attacksPerSecond": 0.481001537447837,
+      "blocksPerSecond": 0.14825389852844292,
+      "guardFraction": 0.8295081967213115,
+      "travelPerSecond": 60.86523015676858,
+      "dodgesPerSecond": 0,
+      "feintsPerSecond": 0,
+      "hitsPerSecond": 0.43158357127168934
+    },
+    "evasive": {
+      "spacing": 112.77153770176527,
+      "attacksPerSecond": 0.5815738963531674,
+      "blocksPerSecond": 0,
+      "guardFraction": 0,
+      "travelPerSecond": 85.13287958471716,
+      "dodgesPerSecond": 2.0556621880998094,
+      "feintsPerSecond": 0,
+      "hitsPerSecond": 0.34548944337811927
+    },
+    "balanced": {
+      "spacing": 99.95730870953058,
+      "attacksPerSecond": 0.5655613533075232,
+      "blocksPerSecond": 0.030297929641474455,
+      "guardFraction": 0.16303436714165967,
+      "travelPerSecond": 73.96612116910961,
+      "dodgesPerSecond": 0,
+      "feintsPerSecond": 0,
+      "hitsPerSecond": 0.28783033159400734
+    },
+    "berserker": {
+      "spacing": 89.83527507156965,
+      "attacksPerSecond": 0.6194043486204998,
+      "blocksPerSecond": 0,
+      "guardFraction": 0,
+      "travelPerSecond": 87.74124713144313,
+      "dodgesPerSecond": 0,
+      "feintsPerSecond": 0,
+      "hitsPerSecond": 0.2932578110725375
+    },
+    "patient": {
+      "spacing": 108.44282226385833,
+      "attacksPerSecond": 0.5787595254171897,
+      "blocksPerSecond": 0.054982154914633014,
+      "guardFraction": 0.472168905950096,
+      "travelPerSecond": 60.43686579008579,
+      "dodgesPerSecond": 0,
+      "feintsPerSecond": 0.7639625735506903,
+      "hitsPerSecond": 0.36172470338574353
+    }
+  }
+}
