@@ -32,4 +32,4 @@ export function deriveStats(value){
  const b=normaliseBuild(value),w=GEAR.weapons[b.weapon],weight=w.weight+GEAR.armour[b.armour].weight+GEAR.helmets[b.helmet].weight+GEAR.shields[b.shield].weight;
  return {weight,maxHealth:70+b.stats.vitality*6,maxStamina:70+b.stats.stamina*5,moveSpeed:(115+b.stats.speed*6)/(1+.03*weight),damage:w.damage+b.stats.strength*1.7,reach:w.reach,interval:w.interval,attackCost:w.cost+.35*weight,regen:8+b.stats.stamina*.35,balance:.08+b.stats.balance*.01,armour:GEAR.armour[b.armour].protection,helmet:GEAR.helmets[b.helmet].protection,block:GEAR.shields[b.shield].block};
 }
-export const DEFAULT_BUILD=Object.freeze(normaliseBuild({name:'Rowan',appearance:{skin:'#c98d68',hair:'#442b22',cloth:'#315c7d'},stats:{strength:4,vitality:4,speed:4,stamina:4,balance:4},style:'balanced',weapon:'sword',armour:'leather',helmet:'cap',shield:'buckler'}));
+export const DEFAULT_BUILD=Object.freeze(normaliseBuild({name:'Rowan',appearance:{skin:'#c98d68',hair:'#5b3826',cloth:'#315c7d'},stats:{strength:4,vitality:4,speed:4,stamina:4,balance:4},style:'balanced',weapon:'sword',armour:'leather',helmet:'cap',shield:'buckler'}));
