@@ -1,4 +1,5 @@
 import Matter from 'matter-js';
+import {prepareArms} from './arm-motion.js';
 import {motionStats} from './styles.js';
 import {deriveStats,GEAR} from '../shared/rules.js';
 const {Body,Vector}=Matter;
@@ -32,22 +33,4 @@ export function targetPose(f,direction,movement){
  if(hand.y>-30)hand.x=Math.max(28,hand.x);const right={x:hand.x*direction,y:hand.y},left={x:direction*29,y:-(f.guard?43:profile.guardHeight-2)};
  return {state,progress:f.attack>0?1-f.attack/(f.attackDuration||.38):0,motorStrength,profile,right,left,weaponAngle:direction*angle,crouch:profile.crouch+(f.exhausted?14:0)+(state==='dodge'?10:state==='get-up'?20*(1-motorStrength):0),lean:state==='dodge'?-direction*.18:0};
 }
-function torque(body,target,power){const error=Math.atan2(Math.sin(target-body.angle),Math.cos(target-body.angle));body.torque+=body.inertia*clamp((error*.0025-body.angularVelocity*.0025)*power,-.0015,.0015);}
-function force(body,target,power){Body.applyForce(body,body.position,{x:clamp((target.x-body.position.x)*.0018-body.velocity.x*.0005,-.065,.065)*power,y:clamp((target.y-body.position.y)*.0018-body.velocity.y*.0005,-.065,.065)*power});}
-function arm(f,side,handTarget,direction,power){
- const p=f.parts,shoulderLocal={x:direction*(side==='R'?12:-12),y:-24},shoulder=Vector.add(p.torso.position,Vector.rotate(shoulderLocal,p.torso.angle));
- const delta=Vector.sub(handTarget,shoulder),distance=clamp(Vector.magnitude(delta),5,78),unit=Vector.normalise(delta),mid=Vector.add(shoulder,Vector.mult(unit,distance*.5));
- let elbow=Vector.add(mid,{x:-unit.y*Math.sqrt(40*40-distance*distance/4)*direction,y:unit.x*Math.sqrt(40*40-distance*distance/4)*direction});
- if(handTarget.y>shoulder.y-18)elbow.x=direction>0?Math.max(elbow.x,f.parts.torso.position.x+25):Math.min(elbow.x,f.parts.torso.position.x-25);
- const upper=Vector.mult(Vector.add(shoulder,elbow),.5),lower=Vector.mult(Vector.add(elbow,handTarget),.5);
- force(p['upperArm'+side],upper,power);force(p['lowerArm'+side],lower,power);force(p['hand'+side],handTarget,power);
- torque(p['upperArm'+side],Math.atan2(shoulder.x-elbow.x,elbow.y-shoulder.y),power);torque(p['lowerArm'+side],Math.atan2(elbow.x-handTarget.x,handTarget.y-elbow.y),power);
-}
-export function drivePose(f,direction,movement){
- const pose=targetPose(f,direction,movement);f.pose=pose;
- const power=pose.motorStrength;if(power<=0)return;
- const origin=f.parts.torso.position,right=Vector.add(origin,pose.right);let left=Vector.add(origin,pose.left);
- if(GEAR.weapons[f.build.weapon].twoHanded){left=Vector.add(right,Vector.rotate({x:0,y:-f.derived.reach*.18},pose.weaponAngle));}
- if(GEAR.weapons[f.build.weapon].dual){left=Vector.add(origin,{x:direction*(pose.state==='strike'?58:30),y:pose.state==='strike'?-34:-22});torque(f.parts.offWeapon,-pose.weaponAngle*.8,power);}
- arm(f,'R',right,direction,power);arm(f,'L',left,direction,power);torque(f.parts.weapon,pose.weaponAngle,power);
-}
+export function drivePose(f,direction,movement){const pose=targetPose(f,direction,movement);f.pose=pose;prepareArms(f,pose,direction);}
