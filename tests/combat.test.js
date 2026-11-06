@@ -8,7 +8,7 @@ const run=(a,b,seed=42,limit=2500)=>{const m=createMatch(a,b,{seed});m.allEvents
 
 test('match has connected articulated bodies on both fighters',()=>{
  const m=createMatch(build(),build({name:'Enemy'}),{seed:1});
- assert.equal(m.fighters.length,2);assert.equal(m.fighters[0].limbs.length,11);assert.ok(m.fighters[0].joints.length>=9);
+ assert.equal(m.fighters.length,2);assert.equal(m.fighters[0].limbs.length,14);assert.ok(m.fighters[0].joints.length>=9);
 });
 test('headless computer fight finishes with a non-draw winner',()=>{
  const m=run(build({style:'aggressive'}),build({name:'Bors',style:'defensive'}),8);

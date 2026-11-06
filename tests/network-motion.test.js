@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {SnapshotBuffer} from '../public/interpolation.js';
+import {FixedStepClock,SNAPSHOT_HZ,encodeSnapshot} from '../server/network-motion.js';
+const pose=(time,x,a=0)=>({type:'snapshot',tick:time*30,time,fighters:[{health:94,maxHealth:94,stamina:90,maxStamina:90,attack:0,parts:{torso:{x,y:300,a}}}]});
+test('snapshot interpolation renders 100 ms behind and lerps the shortest angular path',()=>{const b=new SnapshotBuffer(100);b.push(pose(0,0,3.1),1000);b.push(pose(.1,10,-3.1),1100);const p=b.sample(1150);assert.ok(Math.abs(p.fighters[0].parts.torso.x-5)<.01);assert.ok(Math.abs(p.fighters[0].parts.torso.a)>3);});
+test('interpolation holds newest pose on underflow, bounds buffer and rejects old packets',()=>{const b=new SnapshotBuffer(100);for(let i=0;i<50;i++)b.push(pose(i/30,i),i*1000/30);assert.ok(b.frames.length<=12);assert.equal(b.push(pose(0,0),2000),false);assert.equal(b.sample(100000).fighters[0].parts.torso.x,49);});
+test('fixed step clock catches up delayed loop without slowing simulation or runaway steps',()=>{const clock=new FixedStepClock(0);assert.equal(clock.advance(100),3);assert.equal(clock.advance(105),0);assert.equal(clock.advance(200),3);assert.equal(SNAPSHOT_HZ,30);assert.ok(clock.advance(5000)<=5);assert.ok(clock.droppedMs>0);});
+test('compact snapshots round coordinates, omit static build data and preserve pose',()=>{const s=pose(1,20.123456);s.fighters[0].build={name:'large immutable equipment data'};const compact=encodeSnapshot(s);assert.equal(compact.fighters[0].build,undefined);assert.equal(compact.fighters[0].parts.torso.x,20.1);assert.ok(JSON.stringify(compact).length<JSON.stringify(s).length);});
