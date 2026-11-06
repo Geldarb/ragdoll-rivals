@@ -18,7 +18,7 @@ export class RoomManager{
   for(const [i,p] of room.players.entries())if(p&&p.ws.readyState===1)send(p.ws,{type:'started',code:room.code,slot:i,rematch,mode:room.mode,fighters:room.match.fighters.map(f=>({build:f.build,name:f.build.name})),snapshotHz:30});
   clearInterval(room.timer);
   const loop=startMatchLoop(room.match,stepMatch,snap=>this.broadcast(room,snap),()=>{
-   room.timer=null;const m=room.match;this.broadcast(room,{type:'finished',winner:m.winner,reason:m.time>=75?'Time limit':'Knockout'});
+   room.timer=null;const m=room.match;this.broadcast(room,{type:'finished',winner:m.winner,reason:m.time>=75?'Time limit':'Knockout',stats:m.fighters.map(f=>({...f.metrics,damage:Math.round(f.metrics.damage)})),duration:+m.time.toFixed(1)});
    if(room.pendingRematch?.size){const votes=room.pendingRematch;room.pendingRematch=null;if(room.mode==='computer'||votes.size===2)this.start(room,true);}
   });room.timer=loop.timer;room.timing=loop.metrics;
  }

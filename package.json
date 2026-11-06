@@ -1,13 +1,14 @@
 {
   "name": "ragdoll-rivals",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server/index.js",
     "test": "npm run sync:rules && node --test --test-concurrency=1 tests/*.test.js",
     "test:browser": "node tests/browser.js",
-    "sync:rules": "cp shared/rules.js public/rules.js"
+    "sync:rules": "cp shared/rules.js public/rules.js",
+    "test:balance": "node tests/evaluate-variety.js --check"
   },
   "dependencies": {
     "express": "^5.1.0",

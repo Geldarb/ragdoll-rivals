@@ -24,7 +24,7 @@ export function targetPose(f,direction,movement){
   if(progress<profile.windup){state='wind-up';a=[36,-profile.guardHeight,.45];b=keys.wind;t=smooth(progress/profile.windup);}
   else if(progress<.72){state='strike';a=keys.wind;b=keys.strike;t=smooth((progress-profile.windup)/(.72-profile.windup));}
   else{state='recovery';a=keys.strike;b=[36,-profile.guardHeight,.45];t=smooth((progress-.72)/.28);}
-  hand={x:mix(a[0],b[0],t)+(state==='strike'?profile.lunge*motion.swing*Math.sin(t*Math.PI):0),y:mix(a[1],b[1],t)};angle=mix(a[2],b[2],t)*(.85+f.build.stats.strength*.04);if(f.attackChoice==='thrust'){hand.x+=12*Math.sin(progress*Math.PI);angle=mix(angle,1.45,.55);}if(f.action==='spin')angle+=Math.sin(progress*Math.PI*2)*1.1;
+  hand={x:mix(a[0],b[0],t)+(state==='strike'?profile.lunge*motion.swing*Math.sin(t*Math.PI):0),y:mix(a[1],b[1],t)};angle=mix(a[2],b[2],t)*(.85+f.build.stats.strength*.04);if(f.attackChoice==='thrust'){hand.x+=12*Math.sin(progress*Math.PI);angle=mix(angle,1.45,.55);}if(f.attackChoice==='spin')angle+=Math.sin(progress*Math.PI*2)*1.1;
  }
  if(f.action==='feint'){state='feint';angle=-.2;hand.x-=8;}if(f.action==='stumble'){state='stumble';hand.y+=15;}if(f.exhausted){state='exhausted';hand.y+=30;angle=.8;}
  let motorStrength=f.recovery??1;

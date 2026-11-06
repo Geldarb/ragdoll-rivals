@@ -41,7 +41,7 @@ Every 150 ms the AI examines range, health, stamina, recovery and enemy attack s
 
 ## Netcode and rooms
 
-One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **15 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"1.0.0"}`.
+One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **30 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"1.3.0",commit:"<deployed Git SHA>"}`.
 
 Client messages: `createRoom`, `joinRoom`, `computer`, `rematch`. Server: `roomCreated`, `joined`, `started`, `snapshot`, `finished`, `rematchStatus`, `error`. Six-character codes exclude `0/O/1/I`. Create validates the host and waits. Join validates the guest and immediately starts. Invalid/full/unknown codes produce readable errors. Computer mode starts one authoritative match against a generated legal build. Payloads are capped at 32 KiB.
 
@@ -53,8 +53,46 @@ At 75 seconds, higher health wins; exact equality draws. Collision damage has a 
 
 Original Canvas art uses inked silhouettes, a sand arena, visible joints and equipment, health/stamina bars, result and rematch. Setup has cosmetic choices, all gear, five allocators and seven explained styles. Native labelled controls support keyboard/touch. Desktop is two-column; mobile panels scroll inside a non-scrolling `100dvh` viewport with safe-area padding. Non-menu screens have Back; fullscreen is offered where supported. Manifest, original icons and network-first service worker support installation.
 
-One repo, later one free Render web service using `npm ci`, `npm start` and `/health`; it may sleep. This run stays local. Repository visibility remains Bradley's decision.
+One repo, later one free Render web service using `npm ci`, `npm start` and `/health`; it may sleep. Bradley approved the public repository and the existing single free Render service. The current v1.3 decisions below supersede the original v1 tuning above.
 
 ## Reviewed v1 boundaries
 
 No reconnection, durable accounts or spectator mode. Chaotic fights can draw and balance needs real playtesting. Tests use seeded aggregate intent, not exact paths. Forced-low-health fixtures test terminal logic, while separate real duels test autonomous damage. Clients render server joint positions and item IDs; physics is never shared mutable state.
+
+
+## v1.3 approved expansion (6 November 2026)
+
+All original brief requirements above remain: entirely original assets/code, no manual combat controls, exactly 15 points, no unlocks or paid advantages, legal equipment and server-authoritative shared duels. Bradley additionally approved camera changes, impact presentation, synthesised sound, punchier knockout pacing, final-blow replay, quick-start presets and richer results. These were **not** slipped into the earlier restricted 1.1/1.2 scope.
+
+### Extended equipment
+
+All eleven weapons are immediately available. Spear, warhammer, halberd and claymore require two hands; twin short swords occupy both hands. All reject shields on client and server. Flail and rapier may use either shield. Flail has two dynamic jointed chain links and a physical spiked head; twin swords have two physical blades with separate hand grips. Every class has its own wind-up/strike/recovery keys. See `shared/rules.js` for the complete numerical source of truth.
+
+| New weapon | Weight | Base damage | Reach | Interval | Stamina | Special |
+|---|---:|---:|---:|---:|---:|---|
+| Spear | 6 | 13 | 112 | .93 | 14 | Two-handed thrust |
+| Flail | 5 | 14 | 70 | .98 | 15 | Jointed chain; block probability ×.45 |
+| Warhammer | 10 | 24 | 65 | 1.30 | 22 | Two hands; 55% armour bypass |
+| Halberd | 9 | 19 | 105 | 1.20 | 20 | Two-handed polearm chop |
+| Rapier | 2 | 8 | 75 | .60 | 9 | Fast, precise thrust |
+| Twin short swords | 5 | 10 | 49 | .52 | 11 | Dual blades; no shield |
+
+Mace base damage is now 15 (rather than the original 16). Damage has an explicitly shared ×1.15 pacing factor, not weapon-specific outcome correction. No hidden matchup bonuses, artificial win assignment or paid equipment.
+
+### Styles and motion
+
+`server/styles.js` now decides actual movement, guarding, attack selection and timing. Aggressive alternates forward pressure with fast combos; defensive turtles/shoves and punishes recovery; counterattacker guards until recovery/parry creates a fast riposte window; evasive alternates crouched backsteps and darting entries; balanced mixes; berserker charges/spins, occasionally stumbles, and spends stamina to zero; patient uses measured spacing, circling-like 2D footwork, feints and thrusts. There is no depth axis: sidesteps/rolls are stylised crouched lateral evasions, not a separate 3D dodge system.
+
+Each has a different gait cadence, stride/stance width, crouch, guard height, wind-up fraction and lunge. Strength also scales swing excursion (`.75 + .055*strength`) and knockback (`.008 + .004*strength`). Speed multiplies gait by `.65 + .11*speed` and shortens attack duration via `1.3 - .045*speed`. Gear weight multiplies cadence/stride by `1/(1+.022*weight)` and extends wind-up/duration. Fatigue causes slumped guard, crouch, reduced cadence/advance and slower attacks; stamina governs capacity and regeneration. Vitality affects maximum HP and slight visible torso bulk. Balance governs stagger duration and get-up blend speed.
+
+The authored pose remains tracked by finite PD muscle forces. Heavy impacts disable those drives, then blend through get-up. Mirrored elbow and leg angular projections, outward hand/forearm exclusion forces and a bounded inter-fighter push-apart reduce clinch folding. Limits permit transient collision overshoot rather than teleporting fighters apart or forbidding knockdowns. Regression measurements cover post-physics active frames, not only desired pose constants.
+
+### Synchronous spectacle and interface
+
+The server owns heavy-hit freeze (two 30 Hz ticks), short .65× simulation slow motion, hits, blocks, knockout results and fight totals. Snapshot timestamps remain monotonic at 30 Hz and clients interpolate 100 ms behind. Camera framing, shake, original sparks/light blood/damage numbers and flying gear debris are presentation only. Flying equipment is **cosmetic debris**, not a persistent disarm/armour-loss mechanic: authoritative grip constraints and protection remain intact. Replay reuses actual last-blow snapshots at .4× speed; it cannot change the winner or rematch state.
+
+Original vector artwork has shaded cloth/skin, faces, nasal caps/visors, riveted leather, mail, plate, designed shields, distinct weapon profiles and a parallax castle courtyard/sand. WebAudio synthesises clangs, thuds, grunts and a subdued crowd from oscillators/noise; no copied samples. Sound unlocks on a gesture and mute is saved locally. Knight, Brute, Rogue and Duellist are legal quick-start builds; randomise always allocates exactly 15 points. Builder preview animates stance/gait and swings. Results display a victory pose plus actual hits, blocks, knockdowns suffered and damage dealt, with one-tap computer rematch/two-vote PvP rematch.
+
+### Evidence and remaining limits
+
+`npm test` retains all prior rule, upright/impact recovery, pose, real-WebSocket and scheduler regressions, plus new catalogue/rig/style/stat/joint/presentation tests. `npm run test:balance` runs mirrored round-robin duels across all seven styles and rotating armour, counts draws as half a win and fails if any weapon's sampled field rate leaves 35–65%. See `docs/evidence/variety-1.3.json` for raw data. This finite seeded sample is a tuning gate, **not proof** of universal balance or a statistical claim that every individual matchup is 50:50. Phone screenshots are Chromium touch emulation, not a physical Samsung-device test. Some transient limb overlap during real impacts remains intentional/possible. The free service may sleep; rooms remain ephemeral and refresh still forfeits the slot.
