@@ -1,0 +1,37 @@
+[
+  {
+    "name": "live invalid room code",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live room create",
+    "status": "PASS",
+    "detail": "HFYA9J"
+  },
+  {
+    "name": "live room join and shared start",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live identical snapshots",
+    "status": "PASS",
+    "detail": "tick 2"
+  },
+  {
+    "name": "live two-client fight to result",
+    "status": "PASS",
+    "detail": "winner 0"
+  },
+  {
+    "name": "live two-vote rematch",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live disconnect forfeit",
+    "status": "PASS",
+    "detail": "Opponent disconnected"
+  }
+]
