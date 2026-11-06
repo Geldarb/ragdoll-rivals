@@ -11,7 +11,7 @@ const profiles={
 export function poseProfile(build){const [cadence,stride,stance,crouch,guardHeight,windup,lunge]=profiles[build.style];const weight=deriveStats(build).weight;const factor=1/(1+weight*.018);return {cadence:cadence*factor,stride:stride*factor,stance,crouch,guardHeight,windup:Math.min(.48,windup+weight*.002),lunge:lunge*factor};}
 const swingKeys={
  dagger:{wind:[20,-23,.8],strike:[68,-19,1.4]},sword:{wind:[15,-45,-.7],strike:[64,-6,1.5]},
- axe:{wind:[4,-60,-.45],strike:[58,-2,1.4]},mace:{wind:[8,-54,-.3],strike:[54,0,1.65]},claymore:{wind:[3,-47,-.8],strike:[60,-8,1.8]}
+ axe:{wind:[4,-60,-.45],strike:[58,-2,1.4]},mace:{wind:[8,-54,-.3],strike:[54,0,1.65]},claymore:{wind:[3,-47,-.8],strike:[60,-8,1.8]},spear:{wind:[12,-18,1.1],strike:[70,-22,1.55]},flail:{wind:[8,-52,-1.1],strike:[58,-9,1.9]},warhammer:{wind:[4,-64,-.7],strike:[54,6,1.8]},halberd:{wind:[0,-52,-.95],strike:[62,-1,1.55]},rapier:{wind:[24,-28,1.0],strike:[72,-25,1.52]},twinSwords:{wind:[19,-41,-.5],strike:[61,-13,1.75]}
 };
 export function targetPose(f,direction,movement){
  const profile=poseProfile(f.build),phase=f.gait?.phase||0,bob=Math.sin(phase*Math.PI*2)*2;
@@ -45,5 +45,6 @@ export function drivePose(f,direction,movement){
  const power=pose.motorStrength;if(power<=0)return;
  const origin=f.parts.torso.position,right=Vector.add(origin,pose.right);let left=Vector.add(origin,pose.left);
  if(GEAR.weapons[f.build.weapon].twoHanded){left=Vector.add(right,Vector.rotate({x:0,y:-f.derived.reach*.18},pose.weaponAngle));}
+ if(GEAR.weapons[f.build.weapon].dual){left=Vector.add(origin,{x:direction*(pose.state==='strike'?58:30),y:pose.state==='strike'?-34:-22});torque(f.parts.offWeapon,-pose.weaponAngle*.8,power);}
  arm(f,'R',right,direction,power);arm(f,'L',left,direction,power);torque(f.parts.weapon,pose.weaponAngle,power);
 }

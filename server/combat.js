@@ -20,6 +20,8 @@ function fighter(engine,build,index,x){
  const reach=d.reach;
  parts.weapon=Bodies.rectangle(x+(index? -1:1)*42,356,10,reach,{...opt,density:.0015,label:`${index}:weapon`});
  const grips=[];joint(parts.handR,parts.weapon,{x:0,y:0},{x:0,y:reach*.38},.98);grips.push(joints.at(-1));if(GEAR.weapons[build.weapon].twoHanded){joint(parts.handL,parts.weapon,{x:0,y:0},{x:0,y:reach*.20},.98);grips.push(joints.at(-1));}
+ if(GEAR.weapons[build.weapon].dual){parts.offWeapon=Bodies.rectangle(x-35,350,8,reach,{...opt,density:.0015,label:`${index}:offWeapon`});joint(parts.handL,parts.offWeapon,{x:0,y:0},{x:0,y:reach*.38},.98);grips.push(joints.at(-1));}
+ if(build.weapon==='flail'){for(let i=0;i<2;i++)parts['chain'+i]=Bodies.circle(x+42,310-i*12,3,{...opt,density:.002,label:`${index}:chain${i}`});parts.flailHead=Bodies.circle(x+42,280,11,{...opt,density:.005,label:`${index}:flailHead`});joint(parts.weapon,parts.chain0,{x:0,y:-reach*.45},{x:0,y:0},.7);joint(parts.chain0,parts.chain1,{x:0,y:0},{x:0,y:0},.7);joints.at(-1).length=12;joint(parts.chain1,parts.flailHead,{x:0,y:0},{x:0,y:0},.7);joints.at(-1).length=16;}
  const plants={};for(const side of ['L','R']){plants[side]=Constraint.create({bodyB:parts['foot'+side],pointA:{x:parts['foot'+side].position.x,y:453},length:0,stiffness:0,damping:.2});}
  Composite.add(engine.world,[...Object.values(parts),...joints,...Object.values(plants)]);
  return {build,derived:d,parts,plants,grips,attackDuration:.38,stagger:0,recovery:1,gait:{phase:0,planted:false,stance:{L:false,R:false}},limbs:Object.values(parts),joints,health:d.maxHealth,stamina:d.maxStamina,cooldown:.3,attack:0,attackId:0,hitAttack:-1,guard:false,think:0,metrics:{approach:0,retreat:0,guard:0,attack:0},flash:0};

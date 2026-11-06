@@ -1,7 +1,8 @@
 export const VERSION='1.2.0';
 export const STAT_NAMES=['strength','vitality','speed','stamina','balance'];
 export const GEAR=Object.freeze({
- weapons:{dagger:{weight:1,damage:7,reach:38,interval:.52,cost:8},sword:{weight:3,damage:12,reach:61,interval:.78,cost:12},axe:{weight:5,damage:18,reach:55,interval:1.02,cost:16},mace:{weight:6,damage:16,reach:51,interval:.94,cost:15,armourBypass:.25},claymore:{weight:8,damage:25,reach:82,interval:1.38,cost:23,twoHanded:true}},
+ weapons:{dagger:{weight:1,damage:7,reach:38,interval:.52,cost:8},sword:{weight:3,damage:12,reach:61,interval:.78,cost:12},axe:{weight:5,damage:18,reach:55,interval:1.02,cost:16},mace:{weight:6,damage:16,reach:51,interval:.94,cost:15,armourBypass:.25},claymore:{weight:8,damage:25,reach:82,interval:1.38,cost:23,twoHanded:true},
+ spear:{label:'Spear',weight:6,damage:13,reach:112,interval:.93,cost:14,twoHanded:true},flail:{label:'Flail',weight:5,damage:13,reach:70,interval:.98,cost:15,blockFactor:.45},warhammer:{label:'Warhammer',weight:10,damage:22,reach:65,interval:1.30,cost:22,twoHanded:true,armourBypass:.55},halberd:{label:'Halberd',weight:9,damage:19,reach:105,interval:1.20,cost:20,twoHanded:true},rapier:{label:'Rapier',weight:2,damage:8,reach:75,interval:.60,cost:9},twinSwords:{label:'Twin short swords',weight:5,damage:10,reach:49,interval:.52,cost:11,dual:true}},
  armour:{cloth:{weight:1,protection:.02},leather:{weight:4,protection:.1},mail:{weight:8,protection:.21},plate:{weight:13,protection:.35}},
  helmets:{none:{weight:0,protection:0},cap:{weight:1,protection:.05},helm:{weight:3,protection:.15}},
  shields:{none:{weight:0,block:0},buckler:{weight:3,block:.18},kite:{weight:6,block:.32}}
@@ -24,7 +25,7 @@ export function validateBuild(value){
  if(!GEAR.armour[b.armour])errors.push('Unknown armour.');
  if(!GEAR.helmets[b.helmet])errors.push('Unknown helmet.');
  if(!GEAR.shields[b.shield])errors.push('Unknown shield.');
- if(GEAR.weapons[b.weapon]?.twoHanded&&b.shield!=='none')errors.push('A claymore needs both hands: remove the shield.');
+ if((GEAR.weapons[b.weapon]?.twoHanded||GEAR.weapons[b.weapon]?.dual)&&b.shield!=='none')errors.push(`${GEAR.weapons[b.weapon]?.label||b.weapon} needs both hands: remove the shield.`);
  for(const [key,allowed] of Object.entries(APPEARANCE))if(!allowed.includes(b.appearance[key]))errors.push(`Unknown ${key} colour.`);
  return {ok:errors.length===0,errors};
 }

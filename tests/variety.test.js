@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {GEAR,DEFAULT_BUILD,validateBuild,deriveStats} from '../shared/rules.js';import {createMatch,stepMatch} from '../server/combat.js';
+const newWeapons=['spear','flail','warhammer','halberd','rapier','twinSwords'];
+test('eleven unlocked weapons exist and every new legal loadout validates',()=>{assert.equal(Object.keys(GEAR.weapons).length,11);for(const weapon of newWeapons)assert.equal(validateBuild({...DEFAULT_BUILD,weapon,shield:'none'}).ok,true,weapon);});
+test('all two-handed and dual weapons reject both shield types',()=>{for(const weapon of ['claymore','spear','warhammer','halberd','twinSwords'])for(const shield of ['buckler','kite'])assert.equal(validateBuild({...DEFAULT_BUILD,weapon,shield}).ok,false,weapon);});
+test('new one-handed weapons keep shields legal',()=>{for(const weapon of ['flail','rapier'])assert.equal(validateBuild({...DEFAULT_BUILD,weapon}).ok,true);});
+test('flail owns a jointed physical chain and twin swords own two blades',()=>{const flail=createMatch({...DEFAULT_BUILD,weapon:'flail'},DEFAULT_BUILD,{seed:1}).fighters[0];assert.ok(flail.parts.flailHead);assert.ok(flail.parts.chain0&&flail.parts.chain1);const twin=createMatch({...DEFAULT_BUILD,weapon:'twinSwords',shield:'none'},DEFAULT_BUILD,{seed:1}).fighters[0];assert.ok(twin.parts.offWeapon);assert.equal(twin.grips.length,2);});
