@@ -1,0 +1,506 @@
+{
+  "source": "reference/main-sheet.png",
+  "sourceSize": [
+    1158,
+    1144
+  ],
+  "grid": [
+    6,
+    4
+  ],
+  "cellSize": [
+    193,
+    286
+  ],
+  "frameSize": [
+    300,
+    320
+  ],
+  "pivot": [
+    150,
+    286
+  ],
+  "align": "feet on baseline; horizontally centred on hip/torso; scale from helm height (standing also blended with body height)",
+  "frames": {
+    "idle": {
+      "file": "frames/idle.png",
+      "cell": [
+        0,
+        0
+      ],
+      "label": "Idle",
+      "scale": 0.7742,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 248,
+      "src_helm_h": 37,
+      "src_foot": 265,
+      "src_hip_x": 98.04
+    },
+    "walk1": {
+      "file": "frames/walk1.png",
+      "cell": [
+        0,
+        1
+      ],
+      "label": "Walk 1",
+      "scale": 1.0159,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 189,
+      "src_helm_h": 40,
+      "src_foot": 233,
+      "src_hip_x": 91.97
+    },
+    "walk2": {
+      "file": "frames/walk2.png",
+      "cell": [
+        0,
+        2
+      ],
+      "label": "Walk 2",
+      "scale": 0.9697,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 198,
+      "src_helm_h": 50,
+      "src_foot": 237,
+      "src_hip_x": 96.91
+    },
+    "walk3": {
+      "file": "frames/walk3.png",
+      "cell": [
+        0,
+        3
+      ],
+      "label": "Walk 3",
+      "scale": 1.0726,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 179,
+      "src_helm_h": 43,
+      "src_foot": 225,
+      "src_hip_x": 91.21
+    },
+    "run1": {
+      "file": "frames/run1.png",
+      "cell": [
+        0,
+        4
+      ],
+      "label": "Run 1",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 153,
+      "src_helm_h": 15,
+      "src_foot": 215,
+      "src_hip_x": 86.64
+    },
+    "run2": {
+      "file": "frames/run2.png",
+      "cell": [
+        0,
+        5
+      ],
+      "label": "Run 2",
+      "scale": 1.0726,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 179,
+      "src_helm_h": 19,
+      "src_foot": 226,
+      "src_hip_x": 85.74
+    },
+    "run3": {
+      "file": "frames/run3.png",
+      "cell": [
+        1,
+        0
+      ],
+      "label": "Run 3",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 151,
+      "src_helm_h": 14,
+      "src_foot": 216,
+      "src_hip_x": 88.49
+    },
+    "run4": {
+      "file": "frames/run4.png",
+      "cell": [
+        1,
+        1
+      ],
+      "label": "Run 4",
+      "scale": 1.0267,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 187,
+      "src_helm_h": 20,
+      "src_foot": 231,
+      "src_hip_x": 91.63
+    },
+    "run5": {
+      "file": "frames/run5.png",
+      "cell": [
+        1,
+        2
+      ],
+      "label": "Run 5",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 154,
+      "src_helm_h": 70,
+      "src_foot": 213,
+      "src_hip_x": 87.54
+    },
+    "overhead_raise_a": {
+      "file": "frames/overhead_raise_a.png",
+      "cell": [
+        1,
+        3
+      ],
+      "label": "Overhead raise",
+      "scale": 0.8727,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 220,
+      "src_helm_h": 15,
+      "src_foot": 266,
+      "src_hip_x": 75.91
+    },
+    "sword_forward": {
+      "file": "frames/sword_forward.png",
+      "cell": [
+        1,
+        4
+      ],
+      "label": "Sword-forward step",
+      "scale": 0.96,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 200,
+      "src_helm_h": 27,
+      "src_foot": 240,
+      "src_hip_x": 87.87
+    },
+    "slash_trail": {
+      "file": "frames/slash_trail.png",
+      "cell": [
+        1,
+        5
+      ],
+      "label": "Slash (trail)",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 161,
+      "src_helm_h": 14,
+      "src_foot": 222,
+      "src_hip_x": 89.84
+    },
+    "thrust_lunge": {
+      "file": "frames/thrust_lunge.png",
+      "cell": [
+        2,
+        0
+      ],
+      "label": "Thrust / lunge",
+      "scale": 0.9275,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 207,
+      "src_helm_h": 48,
+      "src_foot": 245,
+      "src_hip_x": 88.94
+    },
+    "ready": {
+      "file": "frames/ready.png",
+      "cell": [
+        2,
+        1
+      ],
+      "label": "Ready stance",
+      "scale": 1.0608,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 181,
+      "src_helm_h": 23,
+      "src_foot": 230,
+      "src_hip_x": 85.34
+    },
+    "high_guard": {
+      "file": "frames/high_guard.png",
+      "cell": [
+        2,
+        2
+      ],
+      "label": "High guard",
+      "scale": 1.0159,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 189,
+      "src_helm_h": 70,
+      "src_foot": 245,
+      "src_hip_x": 80.45
+    },
+    "overhead_raise_b": {
+      "file": "frames/overhead_raise_b.png",
+      "cell": [
+        2,
+        3
+      ],
+      "label": "Overhead raise 2",
+      "scale": 0.9366,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 205,
+      "src_helm_h": 70,
+      "src_foot": 256,
+      "src_hip_x": 96.15
+    },
+    "overhead_chop": {
+      "file": "frames/overhead_chop.png",
+      "cell": [
+        2,
+        4
+      ],
+      "label": "Overhead chop",
+      "scale": 0.8067,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 238,
+      "src_helm_h": 70,
+      "src_foot": 265,
+      "src_hip_x": 95.73
+    },
+    "sweep_slash": {
+      "file": "frames/sweep_slash.png",
+      "cell": [
+        2,
+        5
+      ],
+      "label": "Sweep-slash (trail)",
+      "scale": 0.9948,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 193,
+      "src_helm_h": 15,
+      "src_foot": 236,
+      "src_hip_x": 87.55
+    },
+    "stagger": {
+      "file": "frames/stagger.png",
+      "cell": [
+        3,
+        0
+      ],
+      "label": "Stagger",
+      "scale": 0.91,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 211,
+      "src_helm_h": 15,
+      "src_foot": 246,
+      "src_hip_x": 104.31
+    },
+    "kneel": {
+      "file": "frames/kneel.png",
+      "cell": [
+        3,
+        1
+      ],
+      "label": "Kneel",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 158,
+      "src_helm_h": 14,
+      "src_foot": 220,
+      "src_hip_x": 117.5
+    },
+    "crouch_getup": {
+      "file": "frames/crouch_getup.png",
+      "cell": [
+        3,
+        2
+      ],
+      "label": "Crouch / get-up",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 115,
+      "src_helm_h": 70,
+      "src_foot": 199,
+      "src_hip_x": 84.2
+    },
+    "walk_low": {
+      "file": "frames/walk_low.png",
+      "cell": [
+        3,
+        3
+      ],
+      "label": "Low walk",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 135,
+      "src_helm_h": 64,
+      "src_foot": 215,
+      "src_hip_x": 88.33
+    },
+    "shield_guard": {
+      "file": "frames/shield_guard.png",
+      "cell": [
+        3,
+        4
+      ],
+      "label": "Shield guard",
+      "scale": 0.8136,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 236,
+      "src_helm_h": 70,
+      "src_foot": 262,
+      "src_hip_x": 114.87
+    },
+    "ground_strike": {
+      "file": "frames/ground_strike.png",
+      "cell": [
+        3,
+        5
+      ],
+      "label": "Ground strike",
+      "scale": 1.02,
+      "pivot": [
+        150,
+        286
+      ],
+      "src_body_h": 159,
+      "src_helm_h": 52,
+      "src_foot": 230,
+      "src_hip_x": 85.71
+    }
+  },
+  "clips": {
+    "idle": [
+      "idle"
+    ],
+    "walk": [
+      "walk1",
+      "walk2",
+      "walk3",
+      "walk2"
+    ],
+    "run": [
+      "run1",
+      "run2",
+      "run3",
+      "run4",
+      "run5"
+    ],
+    "raise": [
+      "overhead_raise_a"
+    ],
+    "raise2": [
+      "overhead_raise_b"
+    ],
+    "chop": [
+      "overhead_chop"
+    ],
+    "ready": [
+      "ready"
+    ],
+    "sword_forward": [
+      "sword_forward"
+    ],
+    "slash": [
+      "slash_trail"
+    ],
+    "sweep": [
+      "sweep_slash"
+    ],
+    "lunge": [
+      "thrust_lunge"
+    ],
+    "high_guard": [
+      "high_guard"
+    ],
+    "shield_guard": [
+      "shield_guard"
+    ],
+    "stagger": [
+      "stagger"
+    ],
+    "kneel": [
+      "kneel"
+    ],
+    "crouch": [
+      "crouch_getup"
+    ],
+    "ground_strike": [
+      "ground_strike"
+    ],
+    "combo_chop": [
+      "overhead_raise_a",
+      "overhead_chop"
+    ],
+    "combo_slash": [
+      "ready",
+      "slash_trail"
+    ],
+    "combo_lunge": [
+      "sword_forward",
+      "thrust_lunge"
+    ]
+  }
+}

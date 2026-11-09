@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sprite knight prototype</title>
+  <style>
+    html, body { margin: 0; background: #1a1814; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+import {loadKit, drawScene, DURATION} from './proto.js';
+const params = new URLSearchParams(location.search);
+const w = Number(params.get('w') || 1280);
+const h = Number(params.get('h') || 720);
+const c = document.getElementById('c');
+c.width = w; c.height = h;
+const ctx = c.getContext('2d');
+const kit = await loadKit();
+window.__kit = kit;
+window.DURATION = DURATION;
+window.seek = (t) => {
+  window.__t = t;
+  drawScene(ctx, kit, t, w, h);
+};
+window.ended = false;
+if (params.get('t') != null) {
+  window.seek(Number(params.get('t')));
+  window.__ready = true;
+} else {
+  const start = performance.now();
+  const loop = (now) => {
+    const t = Math.min(DURATION, (now - start) / 1000);
+    window.seek(t);
+    window.__ready = true;
+    if (t >= DURATION) { window.ended = true; return; }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>
