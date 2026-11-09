@@ -9,7 +9,7 @@ npm ci
 npm start
 ```
 
-Open http://localhost:3000. `GET /health` returns `{"ok":true,"version":"1.4.0","commit":"local"}` (Render supplies the deployed Git SHA).
+Open http://localhost:3000. `GET /health` returns `{"ok":true,"version":"2.0.0","commit":"local"}` (Render supplies the deployed Git SHA).
 
 ## Verify
 
@@ -49,3 +49,5 @@ Authored normal arms/blades with physical impact release, damped targets, adapti
 ## 1.4 combat rhythm and weapon scale
 
 Spacing bands, post-exchange disengages, shoves, signature moves, burst/recover rhythm and redrawn weapons (the claymore is a zweihander). Clinch, signature and balance evidence: `docs/evidence/combat-1.4.md`, `docs/evidence/variety-1.4.0.json`, `screenshots/live-1.4/`.
+
+Version 2.0 is animation-first: authored skeletal clips drive standing combat, with Matter.js ragdoll only on knockdown or KO. Design note and evidence: `docs/design.md`, `docs/evidence/combat-2.0.md`, `docs/evidence/variety-2.0.0.json`, `screenshots/live-2.0/`.

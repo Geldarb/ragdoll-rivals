@@ -41,7 +41,7 @@ Every 150 ms the AI examines range, health, stamina, recovery and enemy attack s
 
 ## Netcode and rooms
 
-One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **30 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"1.4.0",commit:"<deployed Git SHA>"}`.
+One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **30 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"2.0.0",commit:"<deployed Git SHA>"}`.
 
 Client messages: `createRoom`, `joinRoom`, `computer`, `rematch`. Server: `roomCreated`, `joined`, `started`, `snapshot`, `finished`, `rematchStatus`, `error`. Six-character codes exclude `0/O/1/I`. Create validates the host and waits. Join validates the guest and immediately starts. Invalid/full/unknown codes produce readable errors. Computer mode starts one authoritative match against a generated legal build. Payloads are capped at 32 KiB.
 
@@ -114,3 +114,18 @@ Signature attacks are weapon-aware: aggressive lunges and multi-hit combos; defe
 All eleven weapons were redrawn with more detail and realistic scale versus a fighter about 201 px tall. The claymore is a zweihander: roughly the fighter's height, with a long ricasso, parrying lugs, a long two-handed grip, wide cross-guard and pommel. Spear and halberd are long polearms; the warhammer has a long haft; the dagger stays short. Physics `reach` and weapon body length match that art. Gear numbers were retuned so the 770-duel field rates stay inside 35–65%. 1.3.1 arm smoothing, 30 Hz authoritative snapshots and identical PvP clients are unchanged.
 
 Evidence: `docs/evidence/variety-1.4.0.json`, `docs/evidence/combat-1.4.md`, `screenshots/live-1.4/`.
+
+
+## v2.0 animation-first combat (approved 9 November 2026)
+
+Bradley reviewed 1.4 and judged standing combat still janky: physics arms, solver pull and camera-stacked strike frames did not read like a fighting game. He chose **fully animated combat, with ragdoll only on knockdown or KO**.
+
+Standing fighters are skeletal rigs driven by a deterministic, server-authoritative animation-and-combat state machine. Authored keyframe clips (idle/guard, walk forward/back, circle, every weapon's wind-up/strike/follow-through/recovery, blocks and parries, dodges/rolls/backsteps, shoves/barges/kicks/bashes, light flinch, heavy recoil, stagger stumble and get-up) use eased curves, critically damped target filters and crossfades. Style signature moves, distance bands, burst/recover rhythm, and stat/weight effects on cadence, stride, wind-up and swing survive from 1.4. Weapon art and sizes, including the zweihander-scale claymore, are unchanged.
+
+Hit detection sweeps the animated weapon segment against head and torso hitboxes at the server tick, with an analytic reach window. Blocks and parries resolve deterministically from guard state plus the existing seeded RNG, so outcomes stay a little unpredictable. Spacing is movement logic plus a body-pushout capsule (`MIN_SEPARATION` 58 px so fighters never overlap while animated, with a wider combat spring so they do not live in a clinch).
+
+Ragdoll is spawned only when a hit causes a knockdown (damage, balance and weight, same threshold family as before) or a KO. Matter.js bodies are seeded from the current pose and velocities plus a hit impulse. After a knockdown the fighter pose-matches back to the get-up clip over about 360 ms. A KO stays ragdoll for the final-blow replay.
+
+The network snapshot is compact (anim clip id, time, blend weights, root position, facing, mode) and still includes the evaluated part transforms so both PvP clients interpolate identically. Physics arm drives and joint-limit projection are retired. Tests keep style differentiation, stat effects, clinch, signatures, 35–65% balance, draws, legality and rooms, and add no-overlap outside ragdoll, ragdoll-only-on-knockdown-or-KO, deterministic seeded replay, and the 1.3.1 jitter gates.
+
+Evidence: `docs/evidence/variety-2.0.0.json`, `docs/evidence/combat-2.0.md`, `screenshots/live-2.0/`.

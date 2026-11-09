@@ -1,5 +1,4 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import Matter from 'matter-js';
 import {createMatch,stepMatch} from '../server/combat.js';
 import {DEFAULT_BUILD,GEAR,STYLES,CLINCH_DISTANCE} from '../shared/rules.js';
 import {styleEvaluation} from './evaluate-variety.js';
@@ -49,8 +48,8 @@ test('weapon physics reach matches the intended art scale versus a fighter',()=>
 
 test('a forced clinch produces a shove that separates the torsos',()=>{
  const m=createMatch({...structuredClone(DEFAULT_BUILD),style:'defensive'},{...structuredClone(DEFAULT_BUILD),style:'berserker'},{seed:4});
- const [a,b]=m.fighters,shift=b.parts.torso.position.x-a.parts.torso.position.x-56;
- for(const body of b.limbs)Matter.Body.translate(body,{x:-shift,y:0});
+ const [a,b]=m.fighters;
+ b.rootX=a.rootX+56;b.parts.torso.position.x=b.rootX;b.parts.torso.x=b.rootX;
  const before=Math.abs(b.parts.torso.position.x-a.parts.torso.position.x);
  let shoved=false;
  for(let i=0;i<90;i++){const snap=stepMatch(m);if(snap.events.some(e=>e.type==='shove'))shoved=true;}

@@ -6,9 +6,10 @@ import { DEFAULT_BUILD } from '../shared/rules.js';
 const build=(changes={})=>structuredClone({...DEFAULT_BUILD,...changes});
 const run=(a,b,seed=42,limit=2500)=>{const m=createMatch(a,b,{seed});m.allEvents=[];for(let i=0;i<limit&&m.status==='fighting';i++){m.allEvents.push(...stepMatch(m).events);}return m;};
 
-test('match has connected articulated bodies on both fighters',()=>{
+test('match has a complete animated skeleton on both fighters',()=>{
  const m=createMatch(build(),build({name:'Enemy'}),{seed:1});
- assert.equal(m.fighters.length,2);assert.equal(m.fighters[0].limbs.length,16);assert.ok(m.fighters[0].joints.length>=9);
+ assert.equal(m.fighters.length,2);assert.equal(m.fighters[0].limbs.length,16);
+ for(const name of ['torso','pelvis','head','upperArmR','lowerArmR','handR','weapon','footR'])assert.ok(m.fighters[0].parts[name]);
 });
 test('headless computer fight finishes with a non-draw winner',()=>{
  const m=run(build({style:'aggressive'}),build({name:'Bors',style:'defensive'}),8);
