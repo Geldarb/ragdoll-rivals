@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>2.2b concept sheet</title></head>
+<body style="margin:0;background:#fff">
+<canvas id="c"></canvas>
+<script type="module">
+import * as sheets from './sheets.js';
+const params = new URLSearchParams(location.search);
+const name = params.get('sheet') || 'pose-sheet';
+const size = {
+  'pose-sheet': [2400, 1680],
+  'gear-variants': [2360, 1280],
+  'in-arena': [1860, 1080],
+  'compare-reference': [1200, 4200],
+  preview: [1280, 720]
+}[name] || [2400, 1680];
+const c = document.getElementById('c'); c.width = size[0]; c.height = size[1];
+const ctx = c.getContext('2d');
+
+async function loadRef() {
+  try {
+    const img = new Image();
+    img.src = './reference/main-sheet.png';
+    await img.decode();
+    return img;
+  } catch { return null; }
+}
+
+function boxesFrom(img) {
+  if (!img || !window.__refBoxes) return null;
+  return window.__refBoxes;
+}
+
+const fns = {
+  'pose-sheet': sheets.poseSheet,
+  'gear-variants': sheets.gearVariants,
+  'in-arena': sheets.inArena,
+  'compare-reference': (ctx, w, h) => sheets.compareReference(ctx, w, h, window.__refImg || null),
+  preview: (ctx, w, h) => sheets.previewFrame(ctx, w, h, params.get('kind') || 'idle', Number(params.get('t') || 0))
+};
+
+if (name === 'compare-reference') {
+  window.__refImg = await loadRef();
+}
+fns[name](ctx, size[0], size[1]);
+window.__ready = true;
+</script>
+</body></html>
