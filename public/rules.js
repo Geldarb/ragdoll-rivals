@@ -1,9 +1,9 @@
-export const VERSION='2.0.0';
+export const VERSION='2.1.0';
 export const STAT_NAMES=['strength','vitality','speed','stamina','balance'];
 export const CLINCH_DISTANCE=78;
 export const GEAR=Object.freeze({
  weapons:{dagger:{label:'Dagger',weight:1,damage:7,reach:34,interval:.50,cost:8},sword:{label:'Sword',weight:3,damage:12,reach:74,interval:.80,cost:12},axe:{label:'Axe',weight:5,damage:17,reach:66,interval:1.04,cost:16},mace:{label:'Mace',weight:6,damage:15,reach:60,interval:.96,cost:15,armourBypass:.25},claymore:{label:'Claymore',weight:9,damage:23,reach:188,interval:1.50,cost:24,twoHanded:true},
- spear:{label:'Spear',weight:6,damage:11,reach:216,interval:1.10,cost:14,twoHanded:true},flail:{label:'Flail',weight:5,damage:14,reach:82,interval:1.00,cost:15,blockFactor:.45},warhammer:{label:'Warhammer',weight:10,damage:22,reach:136,interval:1.38,cost:22,twoHanded:true,armourBypass:.55},halberd:{label:'Halberd',weight:9,damage:18,reach:204,interval:1.28,cost:20,twoHanded:true},rapier:{label:'Rapier',weight:2,damage:6,reach:104,interval:.88,cost:11},twinSwords:{label:'Twin short swords',weight:5,damage:10,reach:56,interval:.54,cost:11,dual:true}},
+ spear:{label:'Spear',weight:6,damage:11,reach:216,interval:1.10,cost:14,twoHanded:true},flail:{label:'Flail',weight:5,damage:14,reach:82,interval:1.00,cost:15,blockFactor:.45},warhammer:{label:'Warhammer',weight:10,damage:22,reach:136,interval:1.38,cost:22,twoHanded:true,armourBypass:.55},halberd:{label:'Halberd',weight:9,damage:18,reach:204,interval:1.28,cost:20,twoHanded:true},rapier:{label:'Rapier',weight:2,damage:7.2,reach:104,interval:.88,cost:11},twinSwords:{label:'Twin short swords',weight:5,damage:10,reach:56,interval:.54,cost:11,dual:true}},
  armour:{cloth:{weight:1,protection:.02},leather:{weight:4,protection:.1},mail:{weight:8,protection:.21},plate:{weight:13,protection:.35}},
  helmets:{none:{weight:0,protection:0},cap:{weight:1,protection:.05},helm:{weight:3,protection:.15}},
  shields:{none:{weight:0,block:0},buckler:{weight:3,block:.18},kite:{weight:6,block:.32}}
