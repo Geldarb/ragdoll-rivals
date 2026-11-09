@@ -1,6 +1,6 @@
 {
   "version": "1.3.0",
-  "method": "12 seeded trials per phase; sword/flail/twin/claymore; 10 seconds each. Active motors >.95 only; six arm/hand angles; wrapped finite-difference acceleration rad/s² and reversals/s where both angular speeds exceed .3 rad/s. Client rendered at 60 Hz with deterministic TCP-arrival jitter. Intentional full ragdoll excluded; real attack acceleration retained.",
+  "method": "12 seeded trials per phase; sword/flail/twin/claymore; 10-second high-HP probes prevent early termination; isolated walk/held guard and real AI clashes. Active motors >.95 only; six arm/hand angles; wrapped finite-difference acceleration rad/s\u00b2 and reversals/s where both angular speeds exceed .3 rad/s. Client rendered at 60 Hz with deterministic TCP-arrival jitter. Intentional full ragdoll excluded; real attack acceleration retained.",
   "sourceHash": "34cdc9a03072faf8e3e24ac3cc1c042a5b1f2487e6d04ccbb16f3318d41337e9",
   "phases": {
     "walk": {
@@ -41,6 +41,78 @@
         }
       },
       "client": {
+        "meanAbsAcceleration": 213.90693969209403,
+        "reversalsPerSecond": 8.72063758389305,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 154.76640945320202,
+            "reversalsPerSecond": 13.087248322148296,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 290.16023709682844,
+            "reversalsPerSecond": 14.597315436242331,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 113.4112217181553,
+            "reversalsPerSecond": 2.743288590604162,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 208.419474846499,
+            "reversalsPerSecond": 8.33053691275209,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 335.4985517031825,
+            "reversalsPerSecond": 11.048657718121351,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 181.1857433346968,
+            "reversalsPerSecond": 2.516778523490057,
+            "samples": 7140
+          }
+        }
+      },
+      "serverIncludingRagdoll": {
+        "meanAbsAcceleration": 212.95574133492778,
+        "reversalsPerSecond": 10.915551839465385,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 152.42938078977747,
+            "reversalsPerSecond": 16.37959866220811,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 286.9903577649615,
+            "reversalsPerSecond": 17.95986622073661,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 114.03035789825721,
+            "reversalsPerSecond": 2.9347826086957873,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 206.95015359693448,
+            "reversalsPerSecond": 10.685618729097483,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 335.4257146249699,
+            "reversalsPerSecond": 14.648829431438802,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 181.90848333466616,
+            "reversalsPerSecond": 2.8846153846155174,
+            "samples": 3576
+          }
+        }
+      },
+      "clientIncludingRagdoll": {
         "meanAbsAcceleration": 213.90693969209403,
         "reversalsPerSecond": 8.72063758389305,
         "perLimb": {
@@ -212,6 +284,78 @@
           }
         }
       },
+      "serverIncludingRagdoll": {
+        "meanAbsAcceleration": 80.17013330065716,
+        "reversalsPerSecond": 10.045986622074041,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 105.35092017754386,
+            "reversalsPerSecond": 9.782608695652625,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 197.0323909079968,
+            "reversalsPerSecond": 22.4749163879609,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 47.763506687657745,
+            "reversalsPerSecond": 7.62541806020102,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 130.87398203074457,
+            "reversalsPerSecond": 20.3929765886297,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          }
+        }
+      },
+      "clientIncludingRagdoll": {
+        "meanAbsAcceleration": 81.47109672103694,
+        "reversalsPerSecond": 6.7323825503359025,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 107.38616858398412,
+            "reversalsPerSecond": 7.6510067114097735,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 199.6319144501322,
+            "reversalsPerSecond": 15.654362416108155,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 50.2687486059101,
+            "reversalsPerSecond": 3.473154362416279,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 131.53974868619522,
+            "reversalsPerSecond": 13.615771812081208,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          }
+        }
+      },
       "trials": [
         {
           "weapon": "sword",
@@ -345,6 +489,78 @@
             "meanAbsAcceleration": 88.88266768179811,
             "reversalsPerSecond": 2.613572630398329,
             "samples": 5320
+          }
+        }
+      },
+      "serverIncludingRagdoll": {
+        "meanAbsAcceleration": 201.2302933627186,
+        "reversalsPerSecond": 9.424470457079586,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 233.22835943681952,
+            "reversalsPerSecond": 15.560200668897037,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 434.62533062015535,
+            "reversalsPerSecond": 15.727424749164603,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 112.40161166760346,
+            "reversalsPerSecond": 2.5418060200670065,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 148.72455179334898,
+            "reversalsPerSecond": 10.19230769230816,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 193.92492187409925,
+            "reversalsPerSecond": 9.9080267558533,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 84.47698478428511,
+            "reversalsPerSecond": 2.6170568561874115,
+            "samples": 3576
+          }
+        }
+      },
+      "clientIncludingRagdoll": {
+        "meanAbsAcceleration": 201.2388705032898,
+        "reversalsPerSecond": 7.811800894854972,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 234.38356807872896,
+            "reversalsPerSecond": 12.902684563759026,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 435.28459261959694,
+            "reversalsPerSecond": 13.77516778523558,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 110.13709653298653,
+            "reversalsPerSecond": 2.2483221476511175,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 150.5627167906868,
+            "reversalsPerSecond": 7.835570469799045,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 194.20444197274202,
+            "reversalsPerSecond": 7.810402684564144,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 82.86080702499756,
+            "reversalsPerSecond": 2.2986577181209187,
+            "samples": 7140
           }
         }
       },
