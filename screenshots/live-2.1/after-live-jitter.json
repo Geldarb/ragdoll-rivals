@@ -1,0 +1,119 @@
+{
+  "health": {
+    "ok": true,
+    "version": "2.1.0",
+    "commit": "f5577a6b09c77c1347859603a8cf6d0829a4a14d"
+  },
+  "phaseMetrics": {
+    "walk": {
+      "meanAbsAcceleration": 6.857176258028727,
+      "reversalsPerSecond": 0.15268107976059608,
+      "perLimb": {
+        "upperArmL": {
+          "meanAbsAcceleration": 0.873384632843379,
+          "reversalsPerSecond": 0,
+          "samples": 127
+        },
+        "lowerArmL": {
+          "meanAbsAcceleration": 0.1049801550239702,
+          "reversalsPerSecond": 0,
+          "samples": 127
+        },
+        "handL": {
+          "meanAbsAcceleration": 0.1049801550239702,
+          "reversalsPerSecond": 0,
+          "samples": 127
+        },
+        "upperArmR": {
+          "meanAbsAcceleration": 11.420872564528715,
+          "reversalsPerSecond": 0.9160864785635765,
+          "samples": 127
+        },
+        "lowerArmR": {
+          "meanAbsAcceleration": 14.319420020376167,
+          "reversalsPerSecond": 0,
+          "samples": 127
+        },
+        "handR": {
+          "meanAbsAcceleration": 14.319420020376167,
+          "reversalsPerSecond": 0,
+          "samples": 127
+        }
+      }
+    },
+    "guard": {
+      "meanAbsAcceleration": 19.515570411282052,
+      "reversalsPerSecond": 0,
+      "perLimb": {
+        "upperArmL": {
+          "meanAbsAcceleration": 7.4727196934463915,
+          "reversalsPerSecond": 0,
+          "samples": 166
+        },
+        "lowerArmL": {
+          "meanAbsAcceleration": 3.767853010578031,
+          "reversalsPerSecond": 0,
+          "samples": 166
+        },
+        "handL": {
+          "meanAbsAcceleration": 3.767853010578031,
+          "reversalsPerSecond": 0,
+          "samples": 166
+        },
+        "upperArmR": {
+          "meanAbsAcceleration": 33.221698931064296,
+          "reversalsPerSecond": 0,
+          "samples": 166
+        },
+        "lowerArmR": {
+          "meanAbsAcceleration": 34.431648911012786,
+          "reversalsPerSecond": 0,
+          "samples": 166
+        },
+        "handR": {
+          "meanAbsAcceleration": 34.431648911012786,
+          "reversalsPerSecond": 0,
+          "samples": 166
+        }
+      }
+    },
+    "clash": {
+      "meanAbsAcceleration": 42.87238969470843,
+      "reversalsPerSecond": 0.8476887581728225,
+      "perLimb": {
+        "upperArmL": {
+          "meanAbsAcceleration": 26.919527683708267,
+          "reversalsPerSecond": 0.22113619778421456,
+          "samples": 810
+        },
+        "lowerArmL": {
+          "meanAbsAcceleration": 13.319490086672888,
+          "reversalsPerSecond": 0.07371206592807153,
+          "samples": 810
+        },
+        "handL": {
+          "meanAbsAcceleration": 13.319490086672888,
+          "reversalsPerSecond": 0.07371206592807153,
+          "samples": 810
+        },
+        "upperArmR": {
+          "meanAbsAcceleration": 60.016797990388305,
+          "reversalsPerSecond": 1.6216654504175736,
+          "samples": 810
+        },
+        "lowerArmR": {
+          "meanAbsAcceleration": 71.82951616040414,
+          "reversalsPerSecond": 1.547953384489502,
+          "samples": 810
+        },
+        "handR": {
+          "meanAbsAcceleration": 71.82951616040414,
+          "reversalsPerSecond": 1.547953384489502,
+          "samples": 810
+        }
+      }
+    }
+  },
+  "errors": [],
+  "note": "Actual live Chromium 390x664 rendered angles, active motors only; defensive sword/plate and aggressive twins/leather, 9.9 seconds each. Live seed is random, so this is corroboration, not a matched-seed causal comparison."
+}

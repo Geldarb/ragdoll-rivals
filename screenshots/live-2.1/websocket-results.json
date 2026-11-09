@@ -1,0 +1,47 @@
+[
+  {
+    "name": "live server rejects invalid stat allocation",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live server rejects all illegal two-handed and dual shields",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live invalid room code",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live room create",
+    "status": "PASS",
+    "detail": "BS2AY8"
+  },
+  {
+    "name": "live room join and shared start",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live identical snapshots",
+    "status": "PASS",
+    "detail": "tick 1"
+  },
+  {
+    "name": "live two-client fight to result",
+    "status": "PASS",
+    "detail": "winner 1"
+  },
+  {
+    "name": "live two-vote rematch",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live disconnect forfeit",
+    "status": "PASS",
+    "detail": "Opponent disconnected"
+  }
+]
