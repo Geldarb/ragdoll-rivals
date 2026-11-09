@@ -1,0 +1,631 @@
+{
+  "version": "2.1.0",
+  "method": "12 seeded trials per phase; sword/flail/twin/claymore; 10-second high-HP probes prevent early termination; isolated walk/held guard and real AI clashes. Active motors >.95 only; six arm/hand angles; wrapped finite-difference acceleration rad/s² and reversals/s where both angular speeds exceed .3 rad/s. Client rendered at 60 Hz with deterministic TCP-arrival jitter. Intentional full ragdoll excluded; real attack acceleration retained.",
+  "sourceHash": "9f8dec9f67fdd076139b51f11879c11da0025a2c7ecb0511b44681dbe1e9c7b8",
+  "phases": {
+    "walk": {
+      "server": {
+        "meanAbsAcceleration": 3.8213162564686303,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 2.972413648472612,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 2.8909799109202696,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 2.8909799109202696,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 5.012621295589232,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 4.5804513864546985,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 4.5804513864546985,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          }
+        }
+      },
+      "client": {
+        "meanAbsAcceleration": 3.3094103047986336,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 2.5290900813706507,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 2.4149691851429984,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 2.4149691851429984,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 4.450517717415899,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 4.023457829859626,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 4.023457829859626,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          }
+        }
+      },
+      "serverIncludingRagdoll": {
+        "meanAbsAcceleration": 3.8213162564686303,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 2.972413648472612,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 2.8909799109202696,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 2.8909799109202696,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 5.012621295589232,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 4.5804513864546985,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 4.5804513864546985,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          }
+        }
+      },
+      "clientIncludingRagdoll": {
+        "meanAbsAcceleration": 3.3094103047986336,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 2.5290900813706507,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 2.4149691851429984,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 2.4149691851429984,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 4.450517717415899,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 4.023457829859626,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 4.023457829859626,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          }
+        }
+      },
+      "trials": [
+        {
+          "weapon": "sword",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "sword",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "sword",
+          "seed": 37,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "flail",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "flail",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "flail",
+          "seed": 37,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 37,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 37,
+          "activeFrames": 300
+        }
+      ]
+    },
+    "guard": {
+      "server": {
+        "meanAbsAcceleration": 2.2934674293934454e-13,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 7.644891431311486e-13,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 3.0579565725245933e-13,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 3.0579565725245933e-13,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          }
+        }
+      },
+      "client": {
+        "meanAbsAcceleration": 6.896444200024506e-14,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 3.2780501002714194e-13,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 4.299082098716419e-14,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 4.299082098716419e-14,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          }
+        }
+      },
+      "serverIncludingRagdoll": {
+        "meanAbsAcceleration": 2.2934674293934454e-13,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 7.644891431311486e-13,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 3.0579565725245933e-13,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 3.0579565725245933e-13,
+            "reversalsPerSecond": 0,
+            "samples": 3576
+          }
+        }
+      },
+      "clientIncludingRagdoll": {
+        "meanAbsAcceleration": 6.896444200024506e-14,
+        "reversalsPerSecond": 0,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 0,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 3.2780501002714194e-13,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 4.299082098716419e-14,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 4.299082098716419e-14,
+            "reversalsPerSecond": 0,
+            "samples": 7140
+          }
+        }
+      },
+      "trials": [
+        {
+          "weapon": "sword",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "sword",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "sword",
+          "seed": 37,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "flail",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "flail",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "flail",
+          "seed": 37,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 37,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 37,
+          "activeFrames": 300
+        }
+      ]
+    },
+    "clash": {
+      "server": {
+        "meanAbsAcceleration": 38.33368563625978,
+        "reversalsPerSecond": 1.4982633407010484,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 27.31674496833967,
+            "reversalsPerSecond": 0.9472687085570379,
+            "samples": 3148
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 20.8722674877416,
+            "reversalsPerSecond": 0.6725607830754969,
+            "samples": 3148
+          },
+          "handL": {
+            "meanAbsAcceleration": 20.8722674877416,
+            "reversalsPerSecond": 0.6725607830754969,
+            "samples": 3148
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 46.87321655751968,
+            "reversalsPerSecond": 2.453425955162728,
+            "samples": 3148
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 57.03380865810806,
+            "reversalsPerSecond": 2.121881907167765,
+            "samples": 3148
+          },
+          "handR": {
+            "meanAbsAcceleration": 57.03380865810806,
+            "reversalsPerSecond": 2.121881907167765,
+            "samples": 3148
+          }
+        }
+      },
+      "client": {
+        "meanAbsAcceleration": 27.613561117313846,
+        "reversalsPerSecond": 0.6743707456071245,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 18.24038118990925,
+            "reversalsPerSecond": 0.29444356498339236,
+            "samples": 6298
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 14.451530366295287,
+            "reversalsPerSecond": 0.18996359031186602,
+            "samples": 6298
+          },
+          "handL": {
+            "meanAbsAcceleration": 14.451530489093052,
+            "reversalsPerSecond": 0.18996359031186602,
+            "samples": 6298
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 34.40735313026241,
+            "reversalsPerSecond": 1.03530156719967,
+            "samples": 6298
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 42.06528655268044,
+            "reversalsPerSecond": 1.1682760804179761,
+            "samples": 6298
+          },
+          "handR": {
+            "meanAbsAcceleration": 42.06528497564264,
+            "reversalsPerSecond": 1.1682760804179761,
+            "samples": 6298
+          }
+        }
+      },
+      "serverIncludingRagdoll": {
+        "meanAbsAcceleration": 43.67926227751679,
+        "reversalsPerSecond": 1.4158305462653942,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 29.441988018596916,
+            "reversalsPerSecond": 0.8444816053512094,
+            "samples": 3576
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 22.797375249948857,
+            "reversalsPerSecond": 0.64381270903013,
+            "samples": 3576
+          },
+          "handL": {
+            "meanAbsAcceleration": 33.495895291746436,
+            "reversalsPerSecond": 0.64381270903013,
+            "samples": 3576
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 50.78188675614224,
+            "reversalsPerSecond": 2.2742474916389006,
+            "samples": 3576
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 59.08835885512153,
+            "reversalsPerSecond": 2.023411371237551,
+            "samples": 3576
+          },
+          "handR": {
+            "meanAbsAcceleration": 66.47006949354478,
+            "reversalsPerSecond": 2.0652173913044427,
+            "samples": 3576
+          }
+        }
+      },
+      "clientIncludingRagdoll": {
+        "meanAbsAcceleration": 30.549264167223942,
+        "reversalsPerSecond": 0.6655480984340373,
+        "perLimb": {
+          "upperArmL": {
+            "meanAbsAcceleration": 19.73398259854229,
+            "reversalsPerSecond": 0.28523489932887314,
+            "samples": 7140
+          },
+          "lowerArmL": {
+            "meanAbsAcceleration": 15.763154436720807,
+            "reversalsPerSecond": 0.20134228187920455,
+            "samples": 7140
+          },
+          "handL": {
+            "meanAbsAcceleration": 22.02531419628188,
+            "reversalsPerSecond": 0.20973154362417143,
+            "samples": 7140
+          },
+          "upperArmR": {
+            "meanAbsAcceleration": 36.53405491683644,
+            "reversalsPerSecond": 0.9899328859060891,
+            "samples": 7140
+          },
+          "lowerArmR": {
+            "meanAbsAcceleration": 42.49187908094101,
+            "reversalsPerSecond": 1.1828859060403267,
+            "samples": 7140
+          },
+          "handR": {
+            "meanAbsAcceleration": 46.74719977402122,
+            "reversalsPerSecond": 1.1241610738255587,
+            "samples": 7140
+          }
+        }
+      },
+      "trials": [
+        {
+          "weapon": "sword",
+          "seed": 5,
+          "activeFrames": 253
+        },
+        {
+          "weapon": "sword",
+          "seed": 19,
+          "activeFrames": 175
+        },
+        {
+          "weapon": "sword",
+          "seed": 37,
+          "activeFrames": 252
+        },
+        {
+          "weapon": "flail",
+          "seed": 5,
+          "activeFrames": 252
+        },
+        {
+          "weapon": "flail",
+          "seed": 19,
+          "activeFrames": 252
+        },
+        {
+          "weapon": "flail",
+          "seed": 37,
+          "activeFrames": 251
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 19,
+          "activeFrames": 251
+        },
+        {
+          "weapon": "twinSwords",
+          "seed": 37,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 5,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 19,
+          "activeFrames": 300
+        },
+        {
+          "weapon": "claymore",
+          "seed": 37,
+          "activeFrames": 300
+        }
+      ]
+    }
+  }
+}

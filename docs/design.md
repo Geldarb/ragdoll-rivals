@@ -129,3 +129,23 @@ Ragdoll is spawned only when a hit causes a knockdown (damage, balance and weigh
 The network snapshot is compact (anim clip id, time, blend weights, root position, facing, mode) and still includes the evaluated part transforms so both PvP clients interpolate identically. Physics arm drives and joint-limit projection are retired. Tests keep style differentiation, stat effects, clinch, signatures, 35–65% balance, draws, legality and rooms, and add no-overlap outside ragdoll, ragdoll-only-on-knockdown-or-KO, deterministic seeded replay, and the 1.3.1 jitter gates.
 
 Evidence: `docs/evidence/variety-2.0.0.json`, `docs/evidence/combat-2.0.md`, `screenshots/live-2.0/`.
+
+## v2.1 fighting-game animation pass (approved 9 November 2026)
+
+Bradley asked for walking, movement and fighting animations to be redone in the *feel* of Shadow Fight 4 and Mortal Kombat, used only as a reference for weight and snap. No assets, animation data or names were copied from either game. On 9 November 2026 he chose:
+
+- **1c** — a mix of Shadow Fight-style weighty, grounded, realistic weapon movement with Mortal Kombat-style snappy, punchy combos.
+- **2a** — a proper fighting stance for every style (bouncing or breathing idle, bent knees, guard up), each with its own variation.
+- **3a** — add jumps, dashes, sweeps and finishers (an overhead slam and a disarm).
+
+v2.1 builds on the 2.0 animation-first system: a server-authoritative state machine with ragdoll only on knockdown or KO. Authored key poses now use anticipation, overshoot and settle, arcs, hip weight-shift, torso/shoulder counter-rotation and secondary motion (head, a short cloth flap, a helm pennon). Planted feet are locked in world X and stride is tied to root speed so a fighting-game walk is a stance-preserving shuffle, not a stroll. Each style has its own idle: aggressive leans forward and bounces; defensive holds a high shield and a wide base; counterattacker coils low; evasive stays light on the toes; balanced is neutral; berserker hunches and heaves; the patient duellist stands upright on a side-on fencing line.
+
+New locomotion: forward dash, backdash, hop/jump and crouch. Combos are 2–4 hit strings per weapon class (light weapons string four hits, mid weapons three, heavy weapons two) with a short cancel window after an unblocked contact, hit-stop, impact frames, follow-through and readable recovery. Attacks have light, heavy and special tiers. High and low guard: sweeps must be blocked low and can be jumped over; overheads, jump attacks and slams must be blocked high.
+
+Finishers fire when the opponent is below about 32% health: an overhead slam that knocks down, and a mechanical disarm that knocks the opponent’s weapon away. The victim immediately fights with a backup dagger (the builder catalogue is unchanged — there is no public “unarmed” item), can pick the dropped weapon up again, or keep the dagger if it is not recovered. Disarm has a long recovery and an 8-second cooldown so it stays fair. Each style’s AI picks from the new moves according to its personality.
+
+The camera keeps both fighters and tall weapons in frame, with a slight zoom punch on big hits only (presentation, not the authoritative camera target). Stats, weight, legality, rooms, PvP sync, rematch, disconnect, sound, effects, presets, results and the replay are unchanged. `GET /health` reports `{ok:true,version:"2.1.0",commit:"<deployed Git SHA>"}`.
+
+The only numerical gear retune required by the field-rate gate was rapier base damage 6 → 7.2.
+
+Evidence: `docs/evidence/variety-2.1.0.json`, `docs/evidence/combat-2.1.md`, `docs/evidence/jitter-after-2.1.0.json`, `screenshots/live-2.1/`.
