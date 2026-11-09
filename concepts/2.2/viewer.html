@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>2.2 concept sheet</title></head>
+<body style="margin:0;background:#cfd4d0">
+<canvas id="c"></canvas>
+<script type="module">
+import * as sheets from './sheets.js';
+const params = new URLSearchParams(location.search);
+const name = params.get('sheet') || 'character-turnaround';
+const size = { 'character-turnaround':[2200,1280], 'stance-sheet':[2460,920], 'walk-cycle':[2460,840],
+  'attack-keyframes':[2260,1780], 'moves-sheet':[2360,1520], 'side-by-side':[1800,980], preview:[1280,720] }[name] || [2200,1280];
+const c = document.getElementById('c'); c.width = size[0]; c.height = size[1];
+const ctx = c.getContext('2d');
+const fns = {
+  'character-turnaround': sheets.characterTurnaround,
+  'stance-sheet': sheets.stanceSheet,
+  'walk-cycle': sheets.walkSheet,
+  'attack-keyframes': sheets.attackSheet,
+  'moves-sheet': sheets.movesSheet,
+  'side-by-side': (ctx,w,h) => sheets.sideBySide(ctx,w,h, window.__old || {parts:{}, build:{appearance:{skin:'#c68642',hair:'#2c1b12',cloth:'#3d5c4e'}, armour:'leather', helmet:'helm', shield:'buckler', weapon:'sword', stats:{vitality:4}}}),
+  preview: (ctx,w,h) => sheets.previewFrame(ctx,w,h, params.get('kind')||'idle', Number(params.get('t')||0))
+};
+fns[name](ctx, size[0], size[1]);
+window.__ready = true;
+</script>
+</body></html>
