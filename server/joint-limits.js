@@ -6,4 +6,4 @@ export function limitJoints(f,dir){
   if(!f.armMotion&&f.stagger<=0){for(const name of ['hand'+side,'lowerArm'+side]){const b=p[name],local=Vector.rotate(Vector.sub(b.position,p.torso.position),-p.torso.angle);if(local.y>-28&&local.y<35&&Math.abs(local.x)<23){Body.applyForce(b,b.position,{x:dir*.035,y:-.008});}}}
  }
 }
-export function separateFighters(a,b){const dx=b.parts.torso.position.x-a.parts.torso.position.x,gap=Math.abs(dx);if(gap>=79)return;const sign=dx>=0?1:-1,force=Math.min(.055,(79-gap)*.0014);for(const [f,s]of [[a,-sign],[b,sign]])Body.applyForce(f.parts.torso,f.parts.torso.position,{x:force*s,y:0});}
+export function separateFighters(a,b){const dx=b.parts.torso.position.x-a.parts.torso.position.x,gap=Math.abs(dx);if(gap>=92)return;const sign=dx>=0?1:-1,force=Math.min(.075,(92-gap)*.0018);for(const [f,s]of [[a,-sign],[b,sign]])Body.applyForce(f.parts.torso,f.parts.torso.position,{x:force*s,y:0});}

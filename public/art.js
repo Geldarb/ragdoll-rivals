@@ -4,16 +4,68 @@ function path(c,points,fill,stroke=ink,width=2){c.beginPath();points.forEach(([x
 function limb(c,a,b,width,colour){c.lineCap='round';for(const [w,col]of [[width+4,ink],[width,colour],[Math.max(2,width*.22),'#ffffff28']]){c.strokeStyle=col;c.lineWidth=w;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();}}
 function circle(c,x,y,r,colour){c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fillStyle=colour;c.fill();c.strokeStyle=ink;c.lineWidth=2;c.stroke();}
 function metal(c,x,y,w,h){const g=c.createLinearGradient(x,y,x+w,y);g.addColorStop(0,'#566a6c');g.addColorStop(.4,'#dce4db');g.addColorStop(1,'#899b9b');c.fillStyle=g;c.fillRect(x,y,w,h);c.strokeStyle=ink;c.lineWidth=2;c.strokeRect(x,y,w,h);}
-export function drawWeapon(c,w,id,off=false){if(!w)return;const r=GEAR.weapons[id].reach; c.save();c.translate(w.x,w.y);c.rotate(w.a||0);
- const pole=['spear','halberd'].includes(id),hammer=id==='warhammer';
- c.fillStyle=pole?'#7a5133':'#4f3528';c.strokeStyle=ink;c.lineWidth=2;c.fillRect(-3,pole?-r*.43:r*.04,6,pole?r*.91:r*.44);c.strokeRect(-3,pole?-r*.43:r*.04,6,pole?r*.91:r*.44);
- for(let y=r*.17;y<r*.45;y+=5){c.strokeStyle='#c19b68';c.beginPath();c.moveTo(-3,y);c.lineTo(3,y+2);c.stroke();}
- if(id==='flail'){metal(c,-4,-r*.44,8,r*.50);}
- else if(id==='spear'){path(c,[[0,-r*.59],[-8,-r*.39],[0,-r*.29],[8,-r*.39]],steel);}
- else if(id==='axe'||id==='halberd'){metal(c,-3,-r*.45,6,r*.55);path(c,[[2,-r*.47],[28,-r*.48],[30,-r*.28],[15,-r*.12],[2,-r*.24]],steel);c.strokeStyle='#eff8ec';c.beginPath();c.moveTo(27,-r*.45);c.lineTo(28,-r*.29);c.lineTo(16,-r*.16);c.stroke();if(id==='halberd')path(c,[[0,-r*.60],[-6,-r*.43],[7,-r*.43]],steel);}
- else if(id==='mace'||hammer){metal(c,-3,-r*.39,6,r*.48);if(hammer){metal(c,-22,-r*.46,37,18);path(c,[[15,-r*.46],[29,-r*.40],[15,-r*.20]],'#738b8c');}else{circle(c,0,-r*.36,12,'#819494');for(let i=0;i<6;i++){c.save();c.translate(0,-r*.36);c.rotate(i*Math.PI/3);path(c,[[8,-4],[17,0],[8,4]],steel);c.restore();}}}
- else{const wide=id==='claymore'?7:id==='rapier'?2:5;path(c,[[-wide,r*.08],[-wide,-r*.35],[0,-r*.53],[wide,-r*.35],[wide,r*.08]],off?'#d1d9c2':steel);c.strokeStyle='#f0f6e9';c.beginPath();c.moveTo(0,r*.04);c.lineTo(0,-r*.40);c.stroke();c.fillStyle=gold;c.fillRect(-12,r*.07,24,4);c.strokeStyle=ink;c.strokeRect(-12,r*.07,24,4);if(id==='rapier'){c.beginPath();c.ellipse(1,r*.17,11,8,-.5,0,Math.PI*2);c.lineWidth=3;c.strokeStyle=gold;c.stroke();}}
- circle(c,0,r*.46,4,gold);c.restore();}
+export function drawWeapon(c,w,id,off=false){if(!w)return;const r=GEAR.weapons[id].reach;c.save();c.translate(w.x,w.y);c.rotate(w.a||0);
+ const wood='#6b4428',wrap='#8b5a32',blade=off?'#d1d9c2':steel;
+ function shaft(y1,y2,width=6,colour=wood){c.fillStyle=colour;c.strokeStyle=ink;c.lineWidth=2;c.fillRect(-width/2,y1,width,y2-y1);c.strokeRect(-width/2,y1,width,y2-y1);}
+ function grip(y1,y2,width=7){shaft(y1,y2,width,wrap);c.strokeStyle='#c19b68';for(let y=y1+3;y<y2;y+=5){c.beginPath();c.moveTo(-width/2,y);c.lineTo(width/2,y+2);c.stroke();}}
+ function guardBar(half=18,y=r*.08,h=5){metal(c,-half,y,half*2,h);}
+ if(id==='claymore'){
+  const tip=-r*.48,lugs=-r*.05,grd=r*.10,gripEnd=r*.40,pom=r*.46;
+  path(c,[[-10,grd],[-9,lugs],[-6.5,tip+r*.12],[0,tip],[6.5,tip+r*.12],[9,lugs],[10,grd]],blade);
+  c.strokeStyle='#f3f7ee';c.lineWidth=1.6;c.beginPath();c.moveTo(0,lugs+2);c.lineTo(0,tip+r*.14);c.stroke();
+  path(c,[[-8,grd],[-8,lugs],[8,lugs],[8,grd]],'#c5cdc4');
+  path(c,[[-8,lugs+3],[-22,lugs-7],[-25,lugs+1],[-8,lugs+12]],steel);
+  path(c,[[8,lugs+3],[22,lugs-7],[25,lugs+1],[8,lugs+12]],steel);
+  metal(c,-32,grd-5,64,10);
+  path(c,[[-32,grd-5],[-38,grd-10],[-30,grd+6],[-22,grd+4]],steel);
+  path(c,[[32,grd-5],[38,grd-10],[30,grd+6],[22,grd+4]],steel);
+  grip(grd+6,gripEnd,8);circle(c,0,pom,8,gold);circle(c,0,pom,3.2,'#efe1a4');
+ }else if(id==='spear'){
+  shaft(-r*.36,r*.46,6);grip(r*.22,r*.40,7);
+  path(c,[[0,-r*.50],[-9,-r*.35],[0,-r*.27],[9,-r*.35]],blade);
+  metal(c,-11,-r*.36,22,4);circle(c,0,r*.48,4,'#4a2f1c');
+ }else if(id==='halberd'){
+  shaft(-r*.32,r*.46,6);grip(r*.18,r*.40,7);
+  path(c,[[3,-r*.34],[34,-r*.38],[36,-r*.18],[16,-r*.06],[3,-r*.16]],blade);
+  path(c,[[0,-r*.52],[-8,-r*.34],[8,-r*.34]],blade);
+  path(c,[[-2,-r*.20],[-24,-r*.10],[-20,-r*.02],[-2,-r*.10]],steel);
+  c.strokeStyle='#eff8ec';c.beginPath();c.moveTo(32,-r*.36);c.lineTo(34,-r*.20);c.stroke();circle(c,0,r*.48,4,'#4a2f1c');
+ }else if(id==='warhammer'){
+  shaft(-r*.30,r*.42,7);grip(r*.14,r*.36,8);
+  metal(c,-26,-r*.42,40,22);path(c,[[14,-r*.42],[32,-r*.36],[32,-r*.26],[14,-r*.20]],'#738b8c');
+  path(c,[[-26,-r*.32],[-38,-r*.31],[-38,-r*.29],[-26,-r*.28]],steel);circle(c,0,r*.46,5,'#4a2f1c');
+ }else if(id==='dagger'){
+  path(c,[[-3.5,r*.10],[-3.2,-r*.28],[0,-r*.48],[3.2,-r*.28],[3.5,r*.10]],blade);
+  c.strokeStyle='#f0f6e9';c.beginPath();c.moveTo(0,r*.06);c.lineTo(0,-r*.36);c.stroke();
+  guardBar(10,r*.09,4);grip(r*.14,r*.34,6);circle(c,0,r*.40,3.5,gold);
+ }else if(id==='sword'){
+  path(c,[[-5.5,r*.08],[-5,-r*.32],[0,-r*.50],[5,-r*.32],[5.5,r*.08]],blade);
+  c.strokeStyle='#f0f6e9';c.beginPath();c.moveTo(0,r*.04);c.lineTo(0,-r*.38);c.stroke();
+  guardBar(16,r*.07,5);grip(r*.13,r*.36,6.5);circle(c,0,r*.42,4.5,gold);
+ }else if(id==='rapier'){
+  path(c,[[-2.2,r*.06],[-2,-r*.36],[0,-r*.50],[2,-r*.36],[2.2,r*.06]],blade);
+  c.strokeStyle='#f0f6e9';c.beginPath();c.moveTo(0,r*.02);c.lineTo(0,-r*.40);c.stroke();
+  c.beginPath();c.ellipse(0,r*.16,13,9,-.15,0,Math.PI*2);c.lineWidth=3;c.strokeStyle=gold;c.stroke();
+  grip(r*.20,r*.38,5);circle(c,0,r*.44,3.6,gold);
+ }else if(id==='twinSwords'){
+  path(c,[[-4.5,r*.08],[-4,-r*.30],[0,-r*.48],[4,-r*.30],[4.5,r*.08]],blade);
+  c.strokeStyle='#f0f6e9';c.beginPath();c.moveTo(0,r*.04);c.lineTo(0,-r*.36);c.stroke();
+  guardBar(13,r*.07,4);grip(r*.12,r*.34,6);circle(c,0,r*.40,4,gold);
+ }else if(id==='axe'){
+  shaft(-r*.28,r*.40,6);grip(r*.16,r*.36,7);
+  path(c,[[3,-r*.36],[30,-r*.40],[32,-r*.16],[14,-r*.02],[3,-r*.14]],blade);
+  c.strokeStyle='#eff8ec';c.beginPath();c.moveTo(29,-r*.36);c.lineTo(30,-r*.18);c.lineTo(16,-r*.06);c.stroke();circle(c,0,r*.44,4,'#4a2f1c');
+ }else if(id==='mace'){
+  shaft(-r*.24,r*.38,6);grip(r*.14,r*.34,7);circle(c,0,-r*.34,13,'#819494');
+  for(let i=0;i<6;i++){c.save();c.translate(0,-r*.34);c.rotate(i*Math.PI/3);path(c,[[9,-4],[18,0],[9,4]],steel);c.restore();}
+  circle(c,0,r*.44,4,'#4a2f1c');
+ }else if(id==='flail'){
+  shaft(r*.02,r*.40,7);grip(r*.10,r*.34,7);metal(c,-5,-r*.42,10,r*.46);circle(c,0,r*.46,4.5,'#4a2f1c');
+ }else{
+  path(c,[[-5,r*.08],[-5,-r*.32],[0,-r*.48],[5,-r*.32],[5,r*.08]],blade);
+  guardBar(14,r*.07,4);grip(r*.12,r*.36,6);circle(c,0,r*.44,4,gold);
+ }
+ c.restore();}
 function arm(c,f,side){const p=f.parts,t=p.torso,dir=f.facing||1,a=t.a||0,xx=dir*(side==='R'?12:-12),shoulder={x:t.x+xx*Math.cos(a)+24*Math.sin(a),y:t.y+xx*Math.sin(a)-24*Math.cos(a)},u=p['upperArm'+side],h=p['hand'+side];if(!u||!h)return;const elbow={x:u.x-Math.sin(u.a||0)*20,y:u.y+Math.cos(u.a||0)*20},b=f.build;
  limb(c,shoulder,elbow,12,b.appearance.cloth);limb(c,elbow,h,10,b.appearance.skin);circle(c,elbow.x,elbow.y,6,b.armour==='plate'?steel:'#674732');circle(c,h.x,h.y,6,'#63452f');if(b.armour==='plate'||b.armour==='mail'){const mid={x:(elbow.x+h.x)/2,y:(elbow.y+h.y)/2};limb(c,mid,{x:mid.x+(h.x-elbow.x)*.20,y:mid.y+(h.y-elbow.y)*.20},11,'#91a4a4');}}
 export function drawBody(c,f){const p=f.parts,b=f.build;if(!p?.torso||!p?.head)return;const t=p.torso;c.save();

@@ -41,7 +41,7 @@ Every 150 ms the AI examines range, health, stamina, recovery and enemy attack s
 
 ## Netcode and rooms
 
-One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **30 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"1.3.1",commit:"<deployed Git SHA>"}`.
+One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **30 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"1.4.0",commit:"<deployed Git SHA>"}`.
 
 Client messages: `createRoom`, `joinRoom`, `computer`, `rematch`. Server: `roomCreated`, `joined`, `started`, `snapshot`, `finished`, `rematchStatus`, `error`. Six-character codes exclude `0/O/1/I`. Create validates the host and waits. Join validates the guest and immediately starts. Invalid/full/unknown codes produce readable errors. Computer mode starts one authoritative match against a generated legal build. Payloads are capped at 32 KiB.
 
@@ -103,3 +103,14 @@ Original vector artwork has shaded cloth/skin, faces, nasal caps/visors, riveted
 Normal arms, hands and blades now follow continuous authored kinematic targets with critically damped/slew-limited target state, rather than competing PD forces, elbow angle projection, contact solver and grip pulls. Blades are kinematic sensors during authored motion; server hit volumes/blocks/damage impulses remain authoritative. Real hit reactions release arms to dynamic physics (180 ms support fade), then return through a 200 ms pose blend. Physical elbow limits are soft bounded torque. Torso, head and legs remain physical; the flail chain/head stays physical. Solver iterations are 10 position / 8 velocity, with two substeps per 30 Hz snapshot.
 
 Rendering uses Hermite position interpolation, wrapped cubic angles and light limb-angle smoothing. Arrival variance adapts the base 100 ms buffer up to 180 ms; brief underruns ease through a bounded 80 ms prediction horizon and ease back on packet recovery. No client sends positions/damage or decides outcomes. Dagger base damage is 6.5 (previously 7), the sole numerical gear retune required by the full band gate. Complete measured before/after evidence, including intentional ragdoll frames, thresholds and final weapon rates: `docs/evidence/arm-stability-1.3.1.md`.
+
+
+## v1.4 combat rhythm, spacing and weapon scale (approved 9 November 2026)
+
+Fights were going stale because fighters, especially berserkers, clinched and stayed there. Each style now keeps a preferred distance band derived from its weapon reach, disengages after an exchange, circles, then re-enters. A clinch is any frame whose torsos are closer than `CLINCH_DISTANCE` (78 px). When they close inside that band they throw a server-authoritative shove, shoulder-barge, kick, shield-bash, pommel or haft break with an authored animation and a single physical impulse.
+
+Signature attacks are weapon-aware: aggressive lunges and multi-hit combos; defensive bash / pommel / haft; counterattacker parry then riposte; evasive roll or backstep and hit-and-run darts; berserker spin and running charge; patient feint and long thrust; balanced mixes those. Combat rises and falls in bursts, recovery pauses and repositioning. Animations add clearer wind-up, follow-through, recoil on landed or blocked hits, stumble and the existing stagger/get-up blend.
+
+All eleven weapons were redrawn with more detail and realistic scale versus a fighter about 201 px tall. The claymore is a zweihander: roughly the fighter's height, with a long ricasso, parrying lugs, a long two-handed grip, wide cross-guard and pommel. Spear and halberd are long polearms; the warhammer has a long haft; the dagger stays short. Physics `reach` and weapon body length match that art. Gear numbers were retuned so the 770-duel field rates stay inside 35–65%. 1.3.1 arm smoothing, 30 Hz authoritative snapshots and identical PvP clients are unchanged.
+
+Evidence: `docs/evidence/variety-1.4.0.json`, `docs/evidence/combat-1.4.md`, `screenshots/live-1.4/`.
