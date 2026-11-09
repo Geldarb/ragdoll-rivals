@@ -9,7 +9,7 @@ npm ci
 npm start
 ```
 
-Open http://localhost:3000. `GET /health` returns `{"ok":true,"version":"1.3.0","commit":"local"}` (Render supplies the deployed Git SHA).
+Open http://localhost:3000. `GET /health` returns `{"ok":true,"version":"1.3.1","commit":"local"}` (Render supplies the deployed Git SHA).
 
 ## Verify
 
@@ -41,3 +41,7 @@ Design decisions and limits are recorded in `docs/design.md`; the staged impleme
 ## v1.3 live evidence
 
 Live: https://ragdoll-rivals.onrender.com (the same single free service). Expanded to eleven unlocked weapons; all seven styles and five stats influence motion as well as rules. Release measurements and limitations: `docs/design.md`, `docs/evidence/variety-1.3.json`, `screenshots/live-1.3/`. `tests/variety-browser.js`, `tests/capture-variety.js` and `tests/live-websocket.js` accept `LIVE_URL` and `SHOTS` for reproducible live checks.
+
+## 1.3.1 motion stability
+
+Authored normal arms/blades with physical impact release, damped targets, adaptive Hermite rendering and eased short underruns. Reproduce measurements with `node tests/measure-jitter.js`; historical matched baseline and thresholds are in `docs/evidence/arm-stability-1.3.1.md`. Live phone frames/video are saved under `screenshots/live-1.3.1/`.

@@ -41,7 +41,7 @@ Every 150 ms the AI examines range, health, stamina, recovery and enemy attack s
 
 ## Netcode and rooms
 
-One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **30 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"1.3.0",commit:"<deployed Git SHA>"}`.
+One Node service uses Express, `ws` and Matter.js. The server advances a fixed **30 Hz** and broadcasts compact body/equipment snapshots at **30 Hz**; clients interpolate. Clients only send validated build, room and rematch messages, never positions or damage. `GET /health` returns `{ok:true,version:"1.3.1",commit:"<deployed Git SHA>"}`.
 
 Client messages: `createRoom`, `joinRoom`, `computer`, `rematch`. Server: `roomCreated`, `joined`, `started`, `snapshot`, `finished`, `rematchStatus`, `error`. Six-character codes exclude `0/O/1/I`. Create validates the host and waits. Join validates the guest and immediately starts. Invalid/full/unknown codes produce readable errors. Computer mode starts one authoritative match against a generated legal build. Payloads are capped at 32 KiB.
 
@@ -96,3 +96,10 @@ Original vector artwork has shaded cloth/skin, faces, nasal caps/visors, riveted
 ### Evidence and remaining limits
 
 `npm test` retains all prior rule, upright/impact recovery, pose, real-WebSocket and scheduler regressions, plus new catalogue/rig/style/stat/joint/presentation tests. `npm run test:balance` runs mirrored round-robin duels across all seven styles and rotating armour, counts draws as half a win and fails if any weapon's sampled field rate leaves 35–65%. See `docs/evidence/variety-1.3.json` for raw data. This finite seeded sample is a tuning gate, **not proof** of universal balance or a statistical claim that every individual matchup is 50:50. Phone screenshots are Chromium touch emulation, not a physical Samsung-device test. Some transient limb overlap during real impacts remains intentional/possible. The free service may sleep; rooms remain ephemeral and refresh still forfeits the slot.
+
+
+## v1.3.1 arm-stability correction (approved 6 November 2026)
+
+Normal arms, hands and blades now follow continuous authored kinematic targets with critically damped/slew-limited target state, rather than competing PD forces, elbow angle projection, contact solver and grip pulls. Blades are kinematic sensors during authored motion; server hit volumes/blocks/damage impulses remain authoritative. Real hit reactions release arms to dynamic physics (180 ms support fade), then return through a 200 ms pose blend. Physical elbow limits are soft bounded torque. Torso, head and legs remain physical; the flail chain/head stays physical. Solver iterations are 10 position / 8 velocity, with two substeps per 30 Hz snapshot.
+
+Rendering uses Hermite position interpolation, wrapped cubic angles and light limb-angle smoothing. Arrival variance adapts the base 100 ms buffer up to 180 ms; brief underruns ease through a bounded 80 ms prediction horizon and ease back on packet recovery. No client sends positions/damage or decides outcomes. Dagger base damage is 6.5 (previously 7), the sole numerical gear retune required by the full band gate. Complete measured before/after evidence, including intentional ragdoll frames, thresholds and final weapon rates: `docs/evidence/arm-stability-1.3.1.md`.

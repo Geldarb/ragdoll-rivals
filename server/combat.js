@@ -1,4 +1,5 @@
 import Matter from 'matter-js';
+import {stepArms,releaseArms} from './arm-motion.js';
 import {chooseIntent,motionStats} from './styles.js';
 import {limitJoints,separateFighters} from './joint-limits.js';
 import {drivePose,poseProfile} from './poses.js';
@@ -37,14 +38,14 @@ function hit(m,a,b,ai){
   a.hitAttack=a.attackId;const d=a.derived,bd=b.derived;let mitigation=d.armour||bd.armour;
   mitigation=bd.armour*(1-(GEAR.weapons[a.build.weapon].armourBypass||0));if(part==='head')mitigation=1-(1-mitigation)*(1-bd.helmet);
   let blocked=false;if(b.guard&&m.rng()<Math.min(.85,(bd.block+.20)*(GEAR.weapons[a.build.weapon].blockFactor||1))){blocked=true;mitigation=1-(1-mitigation)*.35;}
-  const amount=Math.max(2,d.damage*1.15*(.85+m.rng()*.3)*(1-mitigation));b.health=Math.max(0,b.health-amount);b.flash=.15;
+  const amount=Math.max(2,d.damage*1.15*(.85+m.rng()*.3)*(1-mitigation));b.health=Math.max(0,b.health-amount);b.flash=.15;releaseArms(b,amount);
   a.metrics.hits++;a.metrics.damage+=amount;if(blocked){b.metrics.blocks++;b.riposteUntil=m.time+.65;}const wasDown=b.stagger>0;const direction=a===m.fighters[0]?1:-1;applyImpact(b,amount,direction);Body.applyForce(b.parts.torso,p.position,{x:direction*motionStats(a.build).impulse*(1-bd.balance*.35),y:-.009});
   if(!wasDown&&b.stagger>0)b.metrics.knockdowns++;if(amount>=22&&!blocked){m.hitStop=2;m.slowTicks=8;}const debris=amount>=25&&!blocked?(part==='head'&&b.build.helmet!=='none'?'helmet':m.tick%3===0?'weapon':null):null;m.events.push({type:'hit',tick:m.tick,a:ai,part,amount:Math.round(amount),blocked,debris,x:p.position.x,y:p.position.y});return;
  }
 }
 function snapshot(m){return {type:'snapshot',tick:m.tick,time:m.time,motionRate:m.motionRate??1,status:m.status,winner:m.winner,fighters:m.fighters.map(f=>({name:f.build.name,health:f.health,maxHealth:f.derived.maxHealth,stamina:f.stamina,maxStamina:f.derived.maxStamina,build:f.build,attack:f.attack,guard:f.guard,flash:f.flash,pose:f.pose?.state||'guard',poseProgress:f.pose?.progress||0,motorStrength:f.pose?.motorStrength??1,parts:Object.fromEntries(Object.entries(f.parts).map(([k,p])=>[k,{x:p.position.x,y:p.position.y,a:p.angle}]))})),events:m.events.splice(0)};}
 export function createMatch(a,b,{seed=Date.now(),mode='computer'}={}){
- const engine=Engine.create({gravity:{x:0,y:1,scale:.001}});engine.positionIterations=8;engine.velocityIterations=6;
+ const engine=Engine.create({gravity:{x:0,y:1,scale:.001}});engine.positionIterations=10;engine.velocityIterations=8;
  const ground=Bodies.rectangle(400,478,900,40,{isStatic:true,friction:.9,label:'ground'});Composite.add(engine.world,[ground,Bodies.rectangle(-25,250,50,600,{isStatic:true}),Bodies.rectangle(925,250,50,600,{isStatic:true})]);
  const m={engine,fighters:[fighter(engine,a,0,245),fighter(engine,b,1,555)],time:0,tick:0,status:'fighting',winner:null,events:[{type:'start'}],rng:random(seed),mode,seed};
  return m;
@@ -57,7 +58,7 @@ export function stepMatch(m){
  f.metrics.spacing+=Math.abs(f.parts.torso.position.x-o.parts.torso.position.x);f.metrics.samples++;
 
  });
- separateFighters(...m.fighters);Engine.update(m.engine,dt*500);Engine.update(m.engine,dt*500);for(const f of m.fighters){f.metrics.travel+=Math.abs(f.parts.torso.position.x-f.previousX);f.previousX=f.parts.torso.position.x;}hit(m,m.fighters[0],m.fighters[1],0);hit(m,m.fighters[1],m.fighters[0],1);
+ separateFighters(...m.fighters);for(let sub=0;sub<2;sub++){for(const f of m.fighters)stepArms(f,dt/2);Engine.update(m.engine,dt*500);}for(const f of m.fighters){f.metrics.travel+=Math.abs(f.parts.torso.position.x-f.previousX);f.previousX=f.parts.torso.position.x;}hit(m,m.fighters[0],m.fighters[1],0);hit(m,m.fighters[1],m.fighters[0],1);
  if(m.fighters.some(f=>f.health<=0)||m.time>=75){m.status='finished';const [a,b]=m.fighters;if(a.health===b.health)m.winner=-1;else m.winner=a.health>b.health?0:1;m.events.push({type:'finished',winner:m.winner});}
  return snapshot(m);
 }
