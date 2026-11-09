@@ -1,0 +1,48 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Ragdoll Rivals — 2.3 realistic concept</title>
+<style>
+  html, body { margin: 0; background: #1a1c1e; overflow: hidden; }
+  canvas { display: block; }
+</style>
+<canvas id="c"></canvas>
+<script type="module">
+  import { drawLineup, drawDuel, DURATION, validateAt } from './proto.js';
+  const params = new URLSearchParams(location.search);
+  const w = +(params.get('w') || innerWidth);
+  const h = +(params.get('h') || innerHeight);
+  const mode = params.get('mode') || 'duel';
+  const startT = params.has('t') ? +params.get('t') : null;
+  const c = document.getElementById('c');
+  c.width = w; c.height = h;
+  const ctx = c.getContext('2d');
+
+  window.DURATION = DURATION;
+  window.__ready = false;
+  window.ended = false;
+  window.validateAt = validateAt;
+
+  let t0 = performance.now();
+  function frameAt(t) {
+    if (mode === 'lineup') drawLineup(ctx, w, h);
+    else drawDuel(ctx, w, h, t);
+  }
+  window.seek = (t) => { frameAt(Math.max(0, Math.min(DURATION, t))); };
+
+  if (mode === 'lineup') {
+    drawLineup(ctx, w, h);
+    window.__ready = true;
+  } else if (startT != null) {
+    frameAt(startT);
+    window.__ready = true;
+  } else {
+    window.__ready = true;
+    const loop = (now) => {
+      const t = (now - t0) / 1000;
+      if (t >= DURATION) { frameAt(DURATION); window.ended = true; return; }
+      frameAt(t);
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }
+</script>
