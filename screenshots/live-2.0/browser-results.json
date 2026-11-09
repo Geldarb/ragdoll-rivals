@@ -1,0 +1,52 @@
+[
+  {
+    "name": "live desktop page load",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live stat budget prevents over/under allocation",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live illegal claymore shield prevented",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live full computer battle to result",
+    "status": "PASS",
+    "detail": "Thoroughly walloped."
+  },
+  {
+    "name": "live computer rematch",
+    "status": "PASS",
+    "detail": "PASS"
+  },
+  {
+    "name": "live layout 390x664",
+    "status": "PASS",
+    "detail": "no page overflow"
+  },
+  {
+    "name": "live layout 360x640",
+    "status": "PASS",
+    "detail": "no page overflow"
+  },
+  {
+    "name": "live layout 844x340",
+    "status": "PASS",
+    "detail": "no page overflow"
+  },
+  {
+    "name": "live layout 740x360",
+    "status": "PASS",
+    "detail": "no page overflow"
+  },
+  {
+    "name": "live browser console",
+    "status": "PASS",
+    "detail": "0 errors"
+  }
+]
