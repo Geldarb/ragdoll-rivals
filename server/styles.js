@@ -36,7 +36,7 @@ function advanceRhythm(m,f,index,distance,band,t){
  const style=f.build.style,low=f.stamina<f.derived.maxStamina*(style==='berserker'?.08:.36);
  if(f.rhythm.mode==='approach'){if(distance<=band.ideal*1.12){f.rhythm.mode='burst';f.rhythm.until=m.time+t.burst;}else f.rhythm.until=m.time+.4;}
  else if(f.rhythm.mode==='burst'){f.rhythm.mode='disengage';f.rhythm.until=m.time+t.disengage;f.metrics.disengages++;}
- else if(f.rhythm.mode==='disengage'){f.rhythm.mode='circle';f.rhythm.until=m.time+.5;}
+ else if(f.rhythm.mode==='disengage'){f.rhythm.mode='circle';f.rhythm.until=m.time+.5;f.metrics.reentries++;}
  else if(f.rhythm.mode==='circle'){if(low&&style!=='berserker'){f.rhythm.mode='recover';f.rhythm.until=m.time+1.5;}else{f.rhythm.mode='approach';f.rhythm.until=m.time+2.4;f.metrics.reentries++;}}
  else if(f.rhythm.mode==='recover'){if(!low){f.rhythm.mode='approach';f.rhythm.until=m.time+2.2;f.metrics.reentries++;}else f.rhythm.until=m.time+.7;}
  return f.rhythm.mode;
@@ -61,7 +61,7 @@ export function chooseIntent(m,f,o,index){
  }
  if(style==='aggressive'){if(phase<.75&&mode!=='disengage'&&mode!=='recover')movement=dir;f.attackChoice=pickSignature(style,f.build.weapon,opening,phase,distance,band.ideal,f.build.shield);}
  if(style==='defensive'){if(mode!=='disengage')movement*=.55;f.action=f.action||(distance<85?'shove':f.guard?'turtle':'');f.attackChoice=pickSignature(style,f.build.weapon,opening,phase,distance,band.ideal,f.build.shield);}
- if(style==='counterattacker'){if(!opening&&mode!=='disengage')movement=distance>band.ideal+18?dir*.7:0;f.attackChoice=pickSignature(style,f.build.weapon,opening,phase,distance,band.ideal,f.build.shield);if(!opening&&f.guard&&o.attack>0)countSignature(f,'parry');}
+ if(style==='counterattacker'){if(!opening&&mode!=='disengage')movement=distance>band.ideal?dir*.7:0;f.attackChoice=pickSignature(style,f.build.weapon,opening,phase,distance,band.ideal,f.build.shield);if(!opening&&f.guard&&o.attack>0)countSignature(f,'parry');}
  if(style==='evasive'){if(phase<.65&&mode!=='burst'){movement=-dir;f.action=phase<.28?'roll':'dodge';if(f.action==='roll')countSignature(f,'roll');f.metrics.dodges++;}else if(phase<1.25&&mode==='burst')movement=dir*1.3;f.attackChoice='dart';}
  if(style==='berserker'){if(mode!=='disengage')movement=dir*1.15;f.action=phase<.28?'spin':phase>2.45?'stumble':'charge';if(f.action==='stumble')movement*=.25;f.attackChoice=pickSignature(style,f.build.weapon,opening,phase,distance,band.ideal,f.build.shield);}
  if(style==='patient'){if(mode!=='disengage'&&mode!=='recover')movement=distance>band.ideal+10?dir*.7:phase<.8?-dir*.8:0;if(phase<.45){f.action='feint';f.metrics.feints++;countSignature(f,'feint');}f.attackChoice='thrust';}

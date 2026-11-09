@@ -1,4 +1,4 @@
-export const VERSION='1.4.0';
+export const VERSION='2.0.0';
 export const STAT_NAMES=['strength','vitality','speed','stamina','balance'];
 export const CLINCH_DISTANCE=78;
 export const GEAR=Object.freeze({
