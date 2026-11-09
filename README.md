@@ -9,7 +9,7 @@ npm ci
 npm start
 ```
 
-Open http://localhost:3000. `GET /health` returns `{"ok":true,"version":"1.3.1","commit":"local"}` (Render supplies the deployed Git SHA).
+Open http://localhost:3000. `GET /health` returns `{"ok":true,"version":"1.4.0","commit":"local"}` (Render supplies the deployed Git SHA).
 
 ## Verify
 
@@ -45,3 +45,7 @@ Live: https://ragdoll-rivals.onrender.com (the same single free service). Expand
 ## 1.3.1 motion stability
 
 Authored normal arms/blades with physical impact release, damped targets, adaptive Hermite rendering and eased short underruns. Reproduce measurements with `node tests/measure-jitter.js`; historical matched baseline and thresholds are in `docs/evidence/arm-stability-1.3.1.md`. Live phone frames/video are saved under `screenshots/live-1.3.1/`.
+
+## 1.4 combat rhythm and weapon scale
+
+Spacing bands, post-exchange disengages, shoves, signature moves, burst/recover rhythm and redrawn weapons (the claymore is a zweihander). Clinch, signature and balance evidence: `docs/evidence/combat-1.4.md`, `docs/evidence/variety-1.4.0.json`, `screenshots/live-1.4/`.
